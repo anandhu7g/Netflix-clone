@@ -1,0 +1,70 @@
+/* Netflix Logo Text Styles */
+.netflix-text {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 100px;
+  fill: #E50914;
+}
+/* Netflix Logo Styles */
+.netflix-logo {
+  display: block;
+  height: 40px;
+}
+body {
+  background-color: #000;
+  font-family: Arial, sans-serif;
+}
+.movie-card img:hover {
+  transform: scale(1.1);
+}
+h2 {
+  font-weight: bold;
+}
+/* Hero Section Styles */
+.hero-section {
+  background: #000;
+  min-height: 80vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4.5rem 0 0 0; /* Add top padding for navbar height */
+}
+.hero-section .hero-content h1 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+.hero-section .hero-content h3 {
+  font-size: 1.5rem;
+  color: #fff;
+}
+.hero-section .hero-content p {
+  color: #fff;
+}
+.hero-section input[type="email"] {
+  background: rgba(30,30,30,0.8);
+  color: #fff;
+  border: none;
+  outline: none;
+}
+.hero-section input[type="email"]::placeholder {
+  color: #bbb;
+}
+.hero-section .btn-danger {
+  background: #e50914;
+  border: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.hero-section .btn-danger:hover {
+  background: #f40612;
+}
+.hero-bg-thumbnails {
+  pointer-events: none;
+}
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+

@@ -27,7 +27,7 @@ function FAQSection() {
             color: #fff;
           }
           .faq-item {
-            background: #2d2d2d;
+            background: rgba(32, 30, 30, 1);
             margin-bottom: 10px;
             padding: 20px;
             cursor: pointer;

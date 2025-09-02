@@ -1,5 +1,6 @@
 import { useState } from "react";
 import heroImg from "../assets/netflix-hero.jpg";
+import { login } from "../services/authService";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -8,8 +9,13 @@ function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add signup logic here
-    alert("Signup submitted!");
+    const result = login(email, password);
+
+    if (result.success) {
+      window.location.href = "/";
+    } else {
+      setError(result.message);
+    }
   };
 
   return (

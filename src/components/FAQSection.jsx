@@ -19,7 +19,7 @@ function FAQSection() {
   };
 
   return (
-    <section className="faq-section py-5">
+    <section className="faq-section py-2">
       <style>
         {`
           .faq-section {
@@ -48,7 +48,7 @@ function FAQSection() {
         `}
       </style>
 
-      <div className="container">
+      <div className="container mb-5">
         <h4 className="mb-4">{t("faqTitle")}</h4>
         {faqs.map((faq, index) => (
           <div
@@ -65,6 +65,27 @@ function FAQSection() {
             )}
           </div>
         ))}
+        <div className="footer-input mt-5" 
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        >
+          <input type="email" placeholder={t("emailPlaceholder")} style={{ maxWidth: "300px", borderRadius: "5px", marginRight: "10px", height:"60px",
+            border: "1px solid #7a7676ff", padding:"20px", fontSize: "18px"
+            }} />
+          <button
+            type="submit"
+            className="btn btn-danger btn-lg"
+            style={{ borderRadius: "5px", fontWeight: "bold", height:"60px", }}
+          >
+            {t("getStarted")}
+          </button>
+        </div>
+          <p style={{ fontSize: "1.1rem", color:"white", textAlign:"center" }}>
+          {t("footerReady")}
+        </p>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import heroImg from "../assets/netflix-hero.jpg";
-import { login } from "../services/authService";
+import { login } from "../services/authService.js";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -12,7 +12,7 @@ function SignIn() {
     const result = login(email, password);
 
     if (result.success) {
-      window.location.href = "/";
+  window.location.href = "/Dashboard";
     } else {
       setError(result.message);
     }

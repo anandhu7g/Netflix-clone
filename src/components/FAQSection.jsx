@@ -45,6 +45,9 @@ function FAQSection() {
             font-size: 16px;
             color: #bbb;
           }
+          .placeholder-custom::placeholder {
+            color: #c7bdbdff;
+          }
         `}
       </style>
 
@@ -72,18 +75,18 @@ function FAQSection() {
           alignItems: "center",
         }}
         >
-          <input type="email" placeholder={t("emailPlaceholder")} style={{ maxWidth: "300px", borderRadius: "5px", marginRight: "10px", height:"60px",
-            border: "1px solid #7a7676ff", padding:"20px", fontSize: "18px"
+          <input className="placeholder-custom" type="email" placeholder={t("emailPlaceholder")} style={{ maxWidth: "300px", borderRadius: "5px", marginRight: "10px", height:"60px",
+            border: "1px solid #7a7676ff", padding:"20px", fontSize: "18px", background:"#2e2b2bff",
             }} />
           <button
             type="submit"
-            className="btn btn-danger btn-lg"
-            style={{ borderRadius: "5px", fontWeight: "bold", height:"60px", }}
+            className="btn btn-lg"
+            style={{ borderRadius: "5px", fontWeight: "bold", height:"60px", background:"#e50914", color:"white" }}
           >
             {t("getStarted")}
           </button>
         </div>
-          <p style={{ fontSize: "1.1rem", color:"white", textAlign:"center" }}>
+          <p style={{ fontSize: "1.1rem", color:"white", textAlign:"center", marginTop:"12px" }}>
           {t("footerReady")}
         </p>
       </div>

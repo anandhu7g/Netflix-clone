@@ -11,7 +11,7 @@ function HeroSection() {
     <section
       className="hero-section d-flex flex-column justify-content-center align-items-center text-center"
       style={{
-        minHeight: "80vh",
+        minHeight: "100vh",
         width: "100%",
         position: "relative",
         color: "#fff",

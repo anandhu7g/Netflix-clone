@@ -9,9 +9,13 @@ import Row from "../components/Row"; // make sure Row.jsx is inside components/
 import requests from "../services/request";
 import axios from "../services/axios";
 import FooterSection from "../components/FooterSection";
+import Player from "../components/Player";
+import MovieInfoModal from "../components/MovieInfoModal";
 
 function Dashboard() {
   const [heroMovie, setHeroMovie] = useState(null);
+  const [playingMovie, setPlayingMovie] = useState(null);
+  const [infoMovie, setInfoMovie] = useState(null);
 
   // Fetch a random trending movie for the hero section
   useEffect(() => {
@@ -148,9 +152,11 @@ function Dashboard() {
             <button
               className="btn btn-light d-flex align-items-center gap-2 px-4 py-2 fw-bold"
               style={{ fontSize: "18px" }}
+              onClick={() => setPlayingMovie(heroMovie)} // Pass the full movie object
             >
               <Play size={22} /> Play
             </button>
+
             <button
               className="btn btn-secondary d-flex align-items-center gap-2 px-4 py-2 fw-bold"
               style={{
@@ -158,11 +164,20 @@ function Dashboard() {
                 backgroundColor: "rgba(109,109,110,0.7)",
                 border: "none",
               }}
+              onClick={() => setInfoMovie(heroMovie)}
             >
               <Info size={22} /> More Info
             </button>
+
+            {/* Info Modal */}
+            {infoMovie && (
+              <MovieInfoModal
+                movie={infoMovie}
+                onClose={() => setInfoMovie(null)}
+                onPlay={(m) => setPlayingMovie(m)} // ✅ same play logic
+              />
+            )}
           </div>
-          
         </div>
       </div>
 
@@ -179,6 +194,11 @@ function Dashboard() {
       
       {/* Footer */}
       <FooterSection/>
+
+      {/* Trailer Modal */}
+      {playingMovie && (
+        <Player movie={playingMovie} onClose={() => setPlayingMovie(null)} />
+      )}
     </div>
   );
 }

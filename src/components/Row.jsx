@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import axios from "../services/axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-function Row({ title, fetchUrl, propMovies = [], onInfoClick }) {
+function Row({ title, fetchUrl, propMovies = [], onInfoClick, certificationFilter = "" }) {
   const [movies, setMovies] = useState([]);
   const rowRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -13,7 +13,7 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick }) {
     async function fetchData() {
       try {
         const request = await axios.get(fetchUrl);
-        setMovies(request.data.results || []);
+        setMovies(Array.isArray(request.data.results) ? request.data.results : []);
       } catch (err) {
         console.error("Error fetching movies:", err);
         setMovies([]);
@@ -22,7 +22,20 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick }) {
     fetchData();
   }, [fetchUrl]);
 
-  const moviesToDisplay = propMovies.length > 0 ? propMovies : movies;
+  const moviesToDisplay = useMemo(() => {
+    const baseMovies = propMovies.length > 0 ? propMovies : movies;
+
+    if (!certificationFilter || certificationFilter === "ALL") return baseMovies;
+
+    if (certificationFilter === "R") {
+      return baseMovies.filter((m) => m.adult === true);
+    }
+    if (["G", "PG", "PG-13"].includes(certificationFilter)) {
+      return baseMovies.filter((m) => m.adult === false);
+    }
+
+    return baseMovies;
+  }, [movies, propMovies, certificationFilter]);
 
   const smoothScroll = (element, distance, duration = 600) => {
     const start = element.scrollLeft;
@@ -63,7 +76,7 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick }) {
 
   return (
     <div className="position-relative my-4">
-      {title && <h2 className="text-light mb-2">{title}</h2>}
+      {title && <h2 className="mb-2">{title}</h2>}
 
       <div className="position-relative">
         {canScrollLeft && (
@@ -73,19 +86,37 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick }) {
         )}
 
         <div ref={rowRef} className="d-flex overflow-x-scroll hide-scrollbar" style={{ gap: "15px" }}>
-          {moviesToDisplay.map((movie) => (
+          {moviesToDisplay.map((movie, index) => (
             <div
-              key={movie.id}
+              key={movie.id || index}
               style={{ minWidth: "150px", position: "relative", cursor: "pointer" }}
               className="movie-container"
               onClick={() => onInfoClick && onInfoClick(movie)}
             >
-              <img
-                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                alt={movie.title || movie.name}
-                className="movie-img img-fluid rounded"
-                style={{ width: "150px", height: "225px", objectFit: "cover", borderRadius: "6px" }}
-              />
+              {movie.poster_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                  alt={movie.title || movie.name || "Untitled"}
+                  className="movie-img img-fluid rounded"
+                  style={{ width: "150px", height: "225px", objectFit: "cover", borderRadius: "6px" }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "150px",
+                    height: "225px",
+                    background: "#333",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#aaa",
+                    borderRadius: "6px",
+                    fontSize: "12px",
+                  }}
+                >
+                  No Image
+                </div>
+              )}
             </div>
           ))}
         </div>

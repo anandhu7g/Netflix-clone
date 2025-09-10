@@ -10,10 +10,6 @@
   display: block;
   height: 40px;
 }
-body {
-  background-color: #000;
-  font-family: Arial, sans-serif;
-}
 .movie-card img:hover {
   transform: scale(1.1);
 }

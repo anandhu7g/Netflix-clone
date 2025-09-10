@@ -1,33 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import heroBg from "../assets/dashboard_hero.jpeg";
 import logo from "../assets/logo.png";
 import profile from "../assets/profile.png";
 import { Play, Info, Bell } from "lucide-react";
-
-import Row from "../components/Row";
 import requests from "../services/request";
+import Row from "../components/Row";
 import axios from "../services/axios";
 import FooterSection from "../components/FooterSection";
 import Player from "../components/Player";
 import MovieInfoModal from "../components/MovieInfoModal";
+import { Link } from "react-router-dom";
 
-function Dashboard() {
+function Dashboard({ theme }) {
   const [heroMovie, setHeroMovie] = useState(null);
   const [playingMovie, setPlayingMovie] = useState(null);
   const [infoMovie, setInfoMovie] = useState(null);
   const [myList, setMyList] = useState([]);
+  const [certificationFilter, setCertificationFilter] = useState("ALL");
   const [activeTab, setActiveTab] = useState("Home");
-  const tabs = ["Home", "TV Shows", "Movies", "New & Popular", "My List"];
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, text: "🎬 New episode of Stranger Things is now streaming", read: false },
+    { id: 2, text: "⭐ Because you watched Inception, try Tenet", read: false },
+    { id: 3, text: "⏳ Dark Knight will leave on Sept 15", read: false },
+  ]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationRef = useRef(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileRef = useRef(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Fetch a random hero movie
+  // Tabs logic
+  const tabs = ["Home", "Movies", "New & Popular"];
+  if (certificationFilter === "ALL" || certificationFilter === "R") {
+    tabs.splice(1, 0, "TV Shows"); // Insert TV Shows
+    tabs.push("My List"); // Show My List only for ALL or R
+  }
+
+  // Filtered My List
+  const filteredMyList = myList.filter((movie) => {
+    if (certificationFilter === "ALL") return true;
+    if (certificationFilter === "R") return movie.adult === true;
+    return movie.adult === false; // For G, PG, PG-13
+  });
+
+  // Fetch Hero Movie
   useEffect(() => {
     async function fetchHero() {
       try {
-        const request = await axios.get(requests.fetchTrending);
-        const results = request.data.results;
-        if (results && results.length > 0) {
+        const url = requests.fetchTrending(certificationFilter === "ALL" ? "" : certificationFilter);
+        const res = await axios.get(url);
+        const results = res.data.results;
+        if (results?.length > 0) {
           setHeroMovie(results[Math.floor(Math.random() * results.length)]);
         }
       } catch (err) {
@@ -35,10 +61,11 @@ function Dashboard() {
       }
     }
     fetchHero();
-  }, []);
+  }, [certificationFilter]);
 
-  // Fetch My List
+  // Fetch My List whenever tab is My List OR certification changes
   useEffect(() => {
+    if (activeTab !== "My List") return;
     async function fetchMyList() {
       if (!user) return;
       try {
@@ -48,9 +75,56 @@ function Dashboard() {
         console.error("Error fetching My List:", err);
       }
     }
+    fetchMyList();
+  }, [activeTab, user, certificationFilter]);
 
-    if (activeTab === "My List") fetchMyList();
-  }, [activeTab, user]);
+  useEffect(() => {
+    if ((activeTab === "TV Shows" || activeTab === "My List") && !(certificationFilter === "ALL" || certificationFilter === "R")) {
+      setActiveTab("Home");
+    }
+  }, [certificationFilter, activeTab]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // hero section height (80vh in your code)
+      const heroHeight = window.innerHeight * 0.8;
+      setIsScrolled(window.scrollY > heroHeight - 80); // -80 so it switches before nav fully leaves
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setShowNotifications(false);
+      }
+    }
+
+    if (showNotifications) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showNotifications]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (!heroMovie) {
     return (
@@ -61,13 +135,20 @@ function Dashboard() {
   }
 
   return (
-    <div className="dashboard text-white bg-black min-vh-100">
-      <div
-        className="dashboard-wrapper"
-        style={{ pointerEvents: infoMovie || playingMovie ? "none" : "auto" }}
-      >
+    <div
+      className="dashboard min-vh-100"
+      style={{
+        backgroundColor: theme === "dark" ? "#000" : "#fff",
+        color: theme === "dark" ? "#fff" : "#000",
+      }}
+    >
+      <div className="dashboard-wrapper" style={{ pointerEvents: infoMovie || playingMovie ? "none" : "auto" }}>
         {/* Navbar */}
-        <nav className="d-flex justify-content-between align-items-center px-5 py-4" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,1), transparent)", position: "absolute", top: 0, width: "100%", zIndex: 10 }}>
+        <nav className="d-flex justify-content-between align-items-center px-5 py-4" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,1), transparent)", position: "fixed", top: 0, width: "100%", zIndex: 1000, transition: "background 0.3s ease",
+          background: isScrolled
+      ? "rgba(0,0,0,0.95)" 
+      : "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",
+         }}>
           <div className="d-flex align-items-center gap-5">
             <img src={logo} alt="Logo" style={{ height: "35px" }} />
             {tabs.map((tab) => (
@@ -76,62 +157,328 @@ function Dashboard() {
                 href="#"
                 className={activeTab === tab ? "text-warning" : "text-white"}
                 style={{ fontWeight: 500, textDecoration: "none" }}
-                onClick={(e) => { e.preventDefault(); setActiveTab(tab); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveTab(tab);
+                }}
               >
                 {tab}
               </a>
             ))}
           </div>
           <div className="d-flex align-items-center gap-4">
-            <Bell size={20} />
-            <img src={profile} alt="Profile" style={{ width: "32px", borderRadius: "4px" }} />
+            <select
+              value={certificationFilter}
+              onChange={(e) => setCertificationFilter(e.target.value)}
+              style={{
+                backgroundColor: "#141414",
+                color: "#fff",
+                border: "1px solid #555",
+                padding: "6px 12px",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontSize: "0.9rem",
+                fontWeight: "500",
+                outline: "none",
+                appearance: "none",        // hides default arrow
+                WebkitAppearance: "none",  // Safari
+                MozAppearance: "none",     // Firefox
+                backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
+                backgroundSize: "16px",
+              }}
+            >
+              <option value="ALL">All</option>
+              <option value="G">G</option>
+              <option value="PG">PG</option>
+              <option value="PG-13">PG-13</option>
+              <option value="R">R</option>
+            </select>
+            <div
+              className="notification-wrapper position-relative"
+              ref={notificationRef}
+            >
+              {/* Bell Icon with Badge */}
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <Bell
+                  size={22}
+                  style={{ cursor: "pointer", color: "#fff"}}
+                  onClick={() => setShowNotifications((prev) => !prev)}
+                />
+                {/* Badge for unread count */}
+                {notifications.some((n) => !n.read) && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-6px",
+                      right: "-6px",
+                      background: "red",
+                      color: "white",
+                      fontSize: "12px",
+                      borderRadius: "50%",
+                      padding: "2px 6px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {notifications.filter((n) => !n.read).length}
+                  </span>
+                )}
+              </div>
+
+              {/* Dropdown */}
+              {showNotifications && (
+                <div
+                  className="notification-dropdown"
+                  style={{
+                    position: "absolute",
+                    top: "40px",
+                    right: 0,
+                    width: "300px",
+                    background: "#141414",
+                    color: "#fff",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
+                    padding: "10px",
+                    zIndex: 2000,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderBottom: "1px solid #333",
+                      paddingBottom: "6px",
+                    }}
+                  >
+                    <h6 style={{ margin: 0 }}>Notifications</h6>
+                    <button
+                      onClick={() =>
+                        setNotifications((prev) =>
+                          prev.map((n) => ({ ...n, read: true }))
+                        )
+                      }
+                      style={{
+                        fontSize: "12px",
+                        color: "#aaa",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Mark all as read
+                    </button>
+                  </div>
+
+                  <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                    {notifications.map((n) => (
+                      <li
+                        key={n.id}
+                        style={{
+                          padding: "8px 0",
+                          borderBottom: "1px solid #333",
+                          fontWeight: n.read ? "normal" : "bold",
+                        }}
+                      >
+                        {n.text}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <div className="profile-wrapper position-relative" ref={profileRef}>
+              <img
+                src={profile}
+                alt="Profile"
+                style={{ width: "32px", borderRadius: "4px", cursor: "pointer" }}
+                onClick={() => setShowProfileMenu((prev) => !prev)}
+              />
+
+              {showProfileMenu && (
+                <div
+                  className="profile-dropdown"
+                  style={{
+                    position: "absolute",
+                    top: "40px",
+                    right: 0,
+                    background: "#141414",
+                    color: "#fff",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
+                    padding: "10px",
+                    minWidth: "180px",
+                    zIndex: 2000,
+                  }}
+                >
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                    <li
+                      style={{ padding: "8px", cursor: "pointer" }}
+                    >
+                      <Link to="/account" style={{ textDecoration: "none", color: "white" }}>
+                        👤 Account
+                      </Link>
+                    </li>
+                    <li
+                      style={{ padding: "8px", cursor: "pointer" }}
+                    >
+                      <Link to="/settings" style={{ textDecoration: "none", color: "white" }}>
+                        ⚙️ Settings
+                      </Link>
+                    </li>
+                    <li
+                      style={{ padding: "8px", cursor: "pointer" }}
+                      onClick={() => setActiveTab("My List")}
+                    >
+                      📂 My List
+                    </li>
+                    <li style={{ padding: "8px", cursor: "pointer", color: "red" }}>
+                      <button
+                        onClick={() => setShowLogoutModal(true)}
+                        style={{ background: "transparent", border: "none", color: "red", cursor: "pointer" }}
+                      >
+                        🚪 Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </nav>
 
         {/* Hero Section */}
-        <div className="position-relative d-flex align-items-center" style={{ height: "80vh", background: `url(https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}) center/cover no-repeat, url(${heroBg}) center/cover no-repeat` }}>
-          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)" }}></div>
+        <div className="position-relative d-flex align-items-center" style={{ height: "80vh", background: heroMovie?.backdrop_path ? `url(https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}) center/cover no-repeat` : `url(${heroBg}) center/cover no-repeat` }}>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)" }}></div>
           <div className="position-absolute m-5" style={{ zIndex: 2, bottom: "30px", left: "30px", maxWidth: "600px" }}>
-            <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", marginBottom: "20px" }}>{heroMovie.title || heroMovie.name}</h1>
-            <p>{heroMovie.overview?.slice(0, 150)}...</p>
+            <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", marginBottom: "20px", color: "#d2b1b1ff"}}>{heroMovie?.title || heroMovie?.name || "Untitled"}</h1>
+            <p style={{ color: "#e5d8d8ff" }}>{heroMovie?.overview ? heroMovie.overview.slice(0, 150) : "No description available"}...</p>
             <div className="d-flex gap-3 mt-3">
-              <button className="btn btn-light" onClick={() => setPlayingMovie(heroMovie)}><Play size={22} /> Play</button>
-              <button className="btn btn-secondary" onClick={() => setInfoMovie(heroMovie)}><Info size={22} /> More Info</button>
+              <button className="btn btn-light" onClick={() => setPlayingMovie(heroMovie)}>
+                <Play size={22} /> Play
+              </button>
+              <button className="btn btn-secondary" onClick={() => setInfoMovie(heroMovie)}>
+                <Info size={22} /> More Info
+              </button>
             </div>
           </div>
         </div>
 
         {/* Movie Rows */}
-        <div className="px-5">
-          {(activeTab === "Home" || activeTab === "New & Popular") && <>
-            <Row title="Trending Now" fetchUrl={requests.fetchTrending} onInfoClick={setInfoMovie} />
-            {activeTab === "Home" && <Row title="Top Rated" fetchUrl={requests.fetchTopRated} onInfoClick={setInfoMovie} />}
-          </>}
-          {activeTab === "TV Shows" && <>
-            <Row title="Popular TV Shows" fetchUrl={requests.fetchTVPopular} onInfoClick={setInfoMovie} />
-            <Row title="Top Rated TV Shows" fetchUrl={requests.fetchTVTopRated} onInfoClick={setInfoMovie} />
-          </>}
-          {activeTab === "Movies" && <>
-            <Row title="Action Movies" fetchUrl={requests.fetchActionMovies} onInfoClick={setInfoMovie} />
-            <Row title="Comedy Movies" fetchUrl={requests.fetchComedyMovies} onInfoClick={setInfoMovie} />
-            <Row title="Horror Movies" fetchUrl={requests.fetchHorrorMovies} onInfoClick={setInfoMovie} />
-            <Row title="Romance Movies" fetchUrl={requests.fetchRomanceMovies} onInfoClick={setInfoMovie} />
-            <Row title="Documentaries" fetchUrl={requests.fetchDocumentaries} onInfoClick={setInfoMovie} />
-          </>}
-          {activeTab === "My List" && <Row title="My List" propMovies={myList} onInfoClick={setInfoMovie} />}
+        <div className="px-5" style={{marginBottom:"20px"}}>
+          {(activeTab === "Home" || activeTab === "New & Popular") && (
+            <>
+              <Row title="Trending Now" fetchUrl={requests.fetchTrending(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />
+              {activeTab === "Home" && <Row title="Top Rated" fetchUrl={requests.fetchTopRated(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />}
+            </>
+          )}
+
+          {activeTab === "TV Shows" && (certificationFilter === "ALL" || certificationFilter === "R") && (
+            <>
+              <Row title="Popular TV Shows" fetchUrl={requests.fetchTVPopular()} onInfoClick={setInfoMovie} />
+              <Row title="Top Rated TV Shows" fetchUrl={requests.fetchTVTopRated()} onInfoClick={setInfoMovie} />
+            </>
+          )}
+
+          {activeTab === "Movies" && (
+            <>
+              <Row title="Action Movies" fetchUrl={requests.fetchActionMovies(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />
+              <Row title="Comedy Movies" fetchUrl={requests.fetchComedyMovies(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />
+              <Row title="Horror Movies" fetchUrl={requests.fetchHorrorMovies(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />
+              <Row title="Romance Movies" fetchUrl={requests.fetchRomanceMovies(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />
+              <Row title="Documentaries" fetchUrl={requests.fetchDocumentaries(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />
+            </>
+          )}
+
+          {activeTab === "My List" && (
+            filteredMyList.length > 0 ? (
+              <Row title="My List" propMovies={filteredMyList} onInfoClick={setInfoMovie} />
+            ) : (
+              <div className="px-5 mt-4 text-white" style={{ fontSize: "1.2rem" }}>
+                No movies in added to List
+              </div>
+            )
+          )}
         </div>
 
         <FooterSection />
       </div>
 
       {/* Modals */}
-      {infoMovie && <MovieInfoModal movie={infoMovie} onClose={() => setInfoMovie(null)} onPlay={(m) => setPlayingMovie(m)} onInfoClick={(m) => setInfoMovie(m)} user={user} myList={myList} setMyList={setMyList} />}
-      {playingMovie && <Player movie={playingMovie} onClose={() => setPlayingMovie(null)} />}
+        {infoMovie && <MovieInfoModal movie={infoMovie} onClose={() => setInfoMovie(null)} onPlay={setPlayingMovie} onInfoClick={setInfoMovie} user={user} myList={myList} setMyList={setMyList} />}
+        {playingMovie && <Player movie={playingMovie} onClose={() => setPlayingMovie(null)} />}
+        {showLogoutModal && (
+          <div
+            className="modal-backdrop"
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.6)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 3000,
+            }}
+          >
+            <div
+              className="modal-card"
+              style={{
+                background: "#fff",
+                color: "#000",
+                padding: "2rem",
+                borderRadius: "12px",
+                minWidth: "300px",
+                textAlign: "center",
+              }}
+            >
+              <h3>Confirm Logout?</h3>
+              <p>Are you sure you want to logout?</p>
+              <div style={{ marginTop: "1.5rem", display: "flex", justifyContent: "space-around" }}>
+                <button
+                  className="btn-confirm"
+                  onClick={() => {
+                    localStorage.removeItem("user");
+                    window.location.href = "/"; // redirect to home
+                  }}
+                  style={{
+                    background: "red",
+                    color: "#fff",
+                    border: "none",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Logout
+                </button>
+                <button
+                  className="btn-cancel"
+                  onClick={() => setShowLogoutModal(false)}
+                  style={{
+                    background: "#ccc",
+                    color: "#000",
+                    border: "none",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 }
 
 export default Dashboard;
+
+
+
+
 
 
 

@@ -50,6 +50,7 @@ function SignIn() {
 
         if (res.ok) {
           setError("");
+          localStorage.setItem("user", JSON.stringify(newUser));
           alert("User registered successfully!");
           setIsSignUp(false);
           setEmail("");
@@ -77,6 +78,7 @@ function SignIn() {
 
         if (foundUser) {
           setError(""); // clear error on success
+          localStorage.setItem("user", JSON.stringify(foundUser));
           window.location.href = "/Dashboard";
         } else {
           setError("Invalid email or password");

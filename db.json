@@ -4,25 +4,71 @@
       "id": "1",
       "email": "admin@gmail.com",
       "password": "admin123",
-      "name": "Admin"
+      "name": "Admin",
+      "myList": [
+        {
+          "adult": false,
+          "backdrop_path": "/aMuqgBcoID7JOQSol4ViUk2cyod.jpg",
+          "id": 1523140,
+          "title": "Man of Tomorrow",
+          "original_title": "Man of Tomorrow",
+          "overview": "A follow-up film to ‘Superman’ set in the DCU. Plot TBA.",
+          "poster_path": "/v5yOd6MNjyRp6zxgjTDbBwnc4h4.jpg",
+          "media_type": "movie",
+          "original_language": "en",
+          "genre_ids": [
+            28,
+            878
+          ],
+          "popularity": 4.8912,
+          "release_date": "2027-07-07",
+          "video": false,
+          "vote_average": 0,
+          "vote_count": 0
+        },
+        {
+          "adult": false,
+          "backdrop_path": "/eU7IfdWq8KQy0oNd4kKXS0QUR08.jpg",
+          "id": 1061474,
+          "title": "Superman",
+          "original_title": "Superman",
+          "overview": "Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.",
+          "poster_path": "/ombsmhYUqR4qqOLOxAyr5V8hbyv.jpg",
+          "media_type": "movie",
+          "original_language": "en",
+          "genre_ids": [
+            878,
+            12,
+            28
+          ],
+          "popularity": 274.7899,
+          "release_date": "2025-07-09",
+          "video": false,
+          "vote_average": 7.515,
+          "vote_count": 2993
+        }
+      ]
     },
     {
       "id": "2",
       "email": "anandhu@gmail.com",
       "password": "anandhu123",
-      "name": "Anandhu"
+      "name": "Anandhu",
+      "myList": []
     },
     {
       "id": "3",
       "name": "abhay",
       "email": "abhay@gmail.com",
-      "password": "abhay123"
+      "password": "abhay123",
+      "myList": []
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "ebin",
       "email": "ebin@gmail.com",
-      "password": "ebin123"
+      "password": "ebin123",
+      "myList": []
     }
   ]
 }

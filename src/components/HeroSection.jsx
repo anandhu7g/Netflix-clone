@@ -142,12 +142,15 @@ function HeroSection() {
             font-size: 1rem !important;
           }
         }
-
+        @media (max-width: 800px) {
+          .hero-section{
+            min-height: 75vh !important;
+          }
+        }
         @media (max-width: 768px) {
           .hero-section{
             width: 100% !important;
             padding: 0px;
-            min-height: 75vh !important;
           }
           .hero-content {
             width: 70% !important;

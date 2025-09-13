@@ -103,38 +103,15 @@ function SignIn() {
 
   return (
     <div
-      className="d-flex flex-column justify-content-between"
+      className="signup-content d-flex flex-column justify-content-between signin-container"
       style={{
         minHeight: "100vh",
         background: `url(${heroImg}) center/cover no-repeat`,
         position: "relative",
       }}
     >
-      <style>
-        {`
-          input::placeholder {
-            color: #b3b3b3 !important; 
-            opacity: 1 !important; 
-            font-size: 17px;  
-          }
-          /* 🔧 Fix Chrome autofill background */
-          input:-webkit-autofill,
-          input:-webkit-autofill:hover,
-          input:-webkit-autofill:focus,
-          input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-            -webkit-text-fill-color: #fff !important;
-            caret-color: #fff !important;
-            transition: background-color 5000s ease-in-out 0s; 
-          }
-          a:hover {
-            text-decoration: underline;
-          }
-        `}
-      </style>
-
       {/* Background Overlay */}
-      <div
+      <div className="signin-overlay"
         style={{
           position: "absolute",
           top: 0,
@@ -373,6 +350,37 @@ function SignIn() {
           </div>
         </form>
       </div>
+      <style>
+        {`
+          input::placeholder {
+            color: #b3b3b3 !important; 
+            opacity: 1 !important; 
+            font-size: 17px;  
+          }
+          /* 🔧 Fix Chrome autofill background */
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus,
+          input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+            -webkit-text-fill-color: #fff !important;
+            caret-color: #fff !important;
+            transition: background-color 5000s ease-in-out 0s; 
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          @media (max-width: 600px) {
+            .signin-container {
+              background: #000 !important; /* pure black */
+            }
+            .signin-overlay {
+              display: none !important; /* hide semi-transparent overlay */
+            }
+          }
+
+        `}
+      </style>
     </div>
   );
 }

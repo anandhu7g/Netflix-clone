@@ -1,9 +1,12 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.png"; 
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 function Navbar() {
   const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const isSignInPage = location.pathname === "/signin";
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -32,56 +35,58 @@ function Navbar() {
         />
 
         {/* Right Section: Language + Sign In */}
-        <div className="d-flex align-items-center gap-3 action-section">
-          {/* Language Dropdown */}
-          <div className="dropdown">
-            <button
-              className="btn btn-dark dropdown-toggle lang-btn"
-              type="button"
-              id="languageDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              style={{
-                background: "transparent",
-                border: "1px solid #7a7676ff",
-                color: "#fff",
-              }}
+        {!isSignInPage && (
+          <div className="d-flex align-items-center gap-3 action-section">
+            {/* Language Dropdown */}
+            <div className="dropdown">
+              <button
+                className="btn btn-dark dropdown-toggle lang-btn"
+                type="button"
+                id="languageDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style={{
+                  background: "transparent",
+                  border: "1px solid #7a7676ff",
+                  color: "#fff",
+                }}
+              >
+                {/* Full text for desktop */}
+                <span className="desktop-label">
+                  {i18n.language === "en"
+                    ? t("english").charAt(0).toUpperCase() + t("english").slice(1)
+                    : t("hindi").charAt(0).toUpperCase() + t("hindi").slice(1)}
+                </span>
+
+                {/* Short text for mobile */}
+                <span className="mobile-label">
+                  {i18n.language === "en" ? "EN" : "हिं"}
+                </span>
+              </button>
+              <ul className="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <button className="dropdown-item" onClick={() => changeLanguage("en")}> 
+                    {t("english").charAt(0).toUpperCase() + t("english").slice(1)}
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item" onClick={() => changeLanguage("hi")}> 
+                    {t("hindi").charAt(0).toUpperCase() + t("hindi").slice(1)}
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Sign In Button */}
+            <NavLink
+              className="btn px-3 signin-btn"
+              to="/signin"
+              style={{ backgroundColor: "#e50914", color: "#fff" }}
             >
-              {/* Full text for desktop */}
-              <span className="desktop-label">
-                {i18n.language === "en"
-                  ? t("english").charAt(0).toUpperCase() + t("english").slice(1)
-                  : t("hindi").charAt(0).toUpperCase() + t("hindi").slice(1)}
-              </span>
-
-              {/* Short text for mobile */}
-              <span className="mobile-label">
-                {i18n.language === "en" ? "EN" : "हिं"}
-              </span>
-            </button>
-            <ul className="dropdown-menu dropdown-menu-dark">
-              <li>
-                <button className="dropdown-item" onClick={() => changeLanguage("en")}> 
-                  {t("english").charAt(0).toUpperCase() + t("english").slice(1)}
-                </button>
-              </li>
-              <li>
-                <button className="dropdown-item" onClick={() => changeLanguage("hi")}> 
-                  {t("hindi").charAt(0).toUpperCase() + t("hindi").slice(1)}
-                </button>
-              </li>
-            </ul>
+              {t("signIn")}
+            </NavLink>
           </div>
-
-          {/* Sign In Button */}
-          <NavLink
-            className="btn px-3 signin-btn"
-            to="/signin"
-            style={{ backgroundColor: "#e50914", color: "#fff" }}
-          >
-            {t("signIn")}
-          </NavLink>
-        </div>
+        )}
       </div>
 
       <style>{`

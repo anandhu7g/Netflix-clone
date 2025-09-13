@@ -23,22 +23,20 @@ function Navbar() {
         borderBottom: "none",
       }}
     >
-      <div className="d-flex align-items-center justify-content-between w-100 px-3">
+      <div className="d-flex align-items-center justify-content-between w-100 flex-wrap">
         {/* Logo */}
-        <NavLink to="/" onClick={() => window.location.reload()}>
-          <img
-            src={logo}
-            alt="Netflix Logo"
-            style={{ height: "25px", width: "auto", cursor: "pointer" }}
-          />
-        </NavLink>
+        <img
+          src={logo}
+          alt="Netflix Logo"
+          style={{ height: "28px", width: "auto", marginRight:"10px", marginBottom:"10px" }}
+        />
 
         {/* Right Section: Language + Sign In */}
-        <div className="d-flex align-items-center gap-3">
+        <div className="d-flex align-items-center gap-3 action-section">
           {/* Language Dropdown */}
           <div className="dropdown">
             <button
-              className="btn btn-dark dropdown-toggle"
+              className="btn btn-dark dropdown-toggle lang-btn"
               type="button"
               id="languageDropdown"
               data-bs-toggle="dropdown"
@@ -49,9 +47,17 @@ function Navbar() {
                 color: "#fff",
               }}
             >
-            {i18n.language === "en"
-              ? t("english").charAt(0).toUpperCase() + t("english").slice(1)
-              : t("hindi").charAt(0).toUpperCase() + t("hindi").slice(1)}
+              {/* Full text for desktop */}
+              <span className="desktop-label">
+                {i18n.language === "en"
+                  ? t("english").charAt(0).toUpperCase() + t("english").slice(1)
+                  : t("hindi").charAt(0).toUpperCase() + t("hindi").slice(1)}
+              </span>
+
+              {/* Short text for mobile */}
+              <span className="mobile-label">
+                {i18n.language === "en" ? "EN" : "हिं"}
+              </span>
             </button>
             <ul className="dropdown-menu dropdown-menu-dark">
               <li>
@@ -69,7 +75,7 @@ function Navbar() {
 
           {/* Sign In Button */}
           <NavLink
-            className="btn px-3"
+            className="btn px-3 signin-btn"
             to="/signin"
             style={{ backgroundColor: "#e50914", color: "#fff" }}
           >
@@ -77,8 +83,47 @@ function Navbar() {
           </NavLink>
         </div>
       </div>
+
+      <style>{`
+        /* Default */
+        .lang-btn .desktop-label {
+          display: inline;
+        }
+        .lang-btn .mobile-label {
+          display: none;
+        }
+        @media (min-width: 960px) {
+          .navbar img {
+            height: 40px !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .lang-btn .desktop-label {
+            display: none;
+          }
+          .lang-btn .mobile-label {
+            display: inline;
+            font-weight: 600;
+            font-size: 0.9rem;
+          }
+        }
+
+        /* Shrink buttons on <480px */
+        @media (max-width: 480px) {
+          .signin-btn {
+            padding: 0.25rem 0.6rem !important;
+            font-size: 0.8rem !important;
+          }
+          .lang-btn {
+            font-size: 0.8rem !important;
+            padding: 0.25rem 0.6rem !important;
+          }
+        }
+        }
+      `}</style>
     </nav>
   );
 }
 
 export default Navbar;
+

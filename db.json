@@ -105,7 +105,7 @@
         }
       ],
       "mobile": "+919400307178",
-      "theme": "light"
+      "theme": "dark"
     },
     {
       "id": "2",
@@ -127,6 +127,12 @@
       "email": "ebin@gmail.com",
       "password": "ebin123",
       "myList": []
+    },
+    {
+      "id": "5",
+      "name": "anandhu ashokan",
+      "email": "anandhuanandhu@gmail.com",
+      "password": "anandhu123"
     }
   ]
 }

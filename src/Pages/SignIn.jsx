@@ -1,8 +1,11 @@
 import { useState } from "react";
 import heroImg from "../assets/netflix-hero.jpg";
 import { Eye, EyeOff } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 function SignIn() {
+  const location = useLocation();
   const [isSignUp, setIsSignUp] = useState(false); // toggle state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,6 +14,14 @@ function SignIn() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+    useEffect(() => {
+      if (location.state) {
+        const { mode, email: prefillEmail } = location.state;
+        if (mode === "signup") setIsSignUp(true);
+        if (prefillEmail) setEmail(prefillEmail);
+      }
+    }, [location.state]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -39,7 +50,7 @@ function SignIn() {
           users.length > 0 ? Math.max(...users.map((u) => Number(u.id))) + 1 : 1;
 
         // 5. Create new user object
-        const newUser = { id: newId, name, email, password };
+        const newUser = { name, email, password };
 
         // 6. Save to db.json
         const res = await fetch("http://localhost:5000/users", {
@@ -47,10 +58,10 @@ function SignIn() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newUser),
         });
-
+        
         if (res.ok) {
-          setError("");
-          localStorage.setItem("user", JSON.stringify(newUser));
+          const savedUser = await res.json(); // json-server returns the user with its auto-generated numeric id
+          localStorage.setItem("user", JSON.stringify(savedUser));
           alert("User registered successfully!");
           setIsSignUp(false);
           setEmail("");
@@ -106,16 +117,16 @@ function SignIn() {
             opacity: 1 !important; 
             font-size: 17px;  
           }
-        /* 🔧 Fix Chrome autofill background */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus,
-        input:-webkit-autofill:active {
-          -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-          -webkit-text-fill-color: #fff !important;
-          caret-color: #fff !important;
-          transition: background-color 5000s ease-in-out 0s; 
-        }
+          /* 🔧 Fix Chrome autofill background */
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus,
+          input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+            -webkit-text-fill-color: #fff !important;
+            caret-color: #fff !important;
+            transition: background-color 5000s ease-in-out 0s; 
+          }
           a:hover {
             text-decoration: underline;
           }

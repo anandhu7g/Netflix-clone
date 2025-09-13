@@ -144,7 +144,7 @@ function Dashboard({ theme }) {
     >
       <div className="dashboard-wrapper" style={{ pointerEvents: infoMovie || playingMovie ? "none" : "auto" }}>
         {/* Navbar */}
-        <nav className="d-flex justify-content-between align-items-center px-5 py-4" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,1), transparent)", position: "fixed", top: 0, width: "100%", zIndex: 1000, transition: "background 0.3s ease",
+        <nav className="d-flex justify-content-between align-items-center px-5 py-4" style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000, transition: "background 0.3s ease",
           background: isScrolled
       ? "rgba(0,0,0,0.95)" 
       : "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",

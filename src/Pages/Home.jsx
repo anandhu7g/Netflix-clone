@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import Banner from "../components/banner";
 import HeroSection from "../components/HeroSection";
 import MovieRow from "../components/MovieRow";
 import ReasonsSection from "../components/ReasonsSection";
@@ -37,9 +36,8 @@ function Home() {
     <>
       <HeroSection />
       <div style={{ background: "#000" }}>
-        <div className="container mt-5">
-          <Banner movie={trendingMovie} />
-             <h1 className="text-light mt-5">{t("trendingMovies")}</h1>
+        <div className="container-fluid mt-5 px-3 px-md-5">
+          <h1 className="text-light mt-5 text-center text-md-start">{t("trendingMovies")}</h1>
           {movies.length > 0 && <MovieRow movies={movies} />}
         </div>
         <ReasonsSection />

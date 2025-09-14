@@ -14,7 +14,7 @@ function Navbar() {
 
   return (
     <nav
-      className="navbar netflix-navbar"
+      className="navbar netflix-navbar d-flex align-items-center justify-content-between w-100"
       style={{
         position: "absolute",
         top: 20,
@@ -26,12 +26,12 @@ function Navbar() {
         borderBottom: "none",
       }}
     >
-      <div className="d-flex align-items-center justify-content-between w-100 flex-wrap">
+      <div className="d-flex align-items-center justify-content-between w-100 flex-wrap" style={{ rowGap: "5px" }}>
         {/* Logo */}
         <img
           src={logo}
           alt="Netflix Logo"
-          style={{ height: "28px", width: "auto", marginRight:"10px", marginBottom:"10px" }}
+          style={{ height: "23px", width: "auto", marginRight:"10px" }}
         />
 
         {/* Right Section: Language + Sign In */}
@@ -116,12 +116,12 @@ function Navbar() {
         /* Shrink buttons on <480px */
         @media (max-width: 480px) {
           .signin-btn {
-            padding: 0.25rem 0.6rem !important;
+            padding: 0.20rem 0.6rem !important;
             font-size: 0.8rem !important;
           }
           .lang-btn {
             font-size: 0.8rem !important;
-            padding: 0.25rem 0.6rem !important;
+            padding: 0.16rem 0.6rem !important;
           }
         }
         }

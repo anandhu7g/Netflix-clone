@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import heroBg from "../assets/dashboard_hero.jpeg";
 import logo from "../assets/logo.png";
 import profile from "../assets/profile.png";
-import { Play, Info, Bell } from "lucide-react";
+import { Play, Info, Bell, Menu, X } from "lucide-react";
 import requests from "../services/request";
 import Row from "../components/Row";
 import axios from "../services/axios";
@@ -29,7 +29,7 @@ function Dashboard({ theme }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileRef = useRef(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
+  const [showMobileMenu, setShowMobileMenu] = useState(false); 
   const user = JSON.parse(localStorage.getItem("user"));
 
   // Tabs logic
@@ -105,7 +105,7 @@ function Dashboard({ theme }) {
       }
     }
 
-    if (showNotifications) {
+    if (showNotifications && window.innerWidth >= 1100) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -122,9 +122,26 @@ function Dashboard({ theme }) {
         setShowProfileMenu(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    if (window.innerWidth >= 1100) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (showMobileMenu) {
+      // Disable body scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Enable body scroll
+      document.body.style.overflow = "auto";
+    }
+
+    // Clean up on unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showMobileMenu]);
 
   if (!heroMovie) {
     return (
@@ -135,20 +152,29 @@ function Dashboard({ theme }) {
   }
 
   return (
-    <div
-      className="dashboard min-vh-100"
+    <div className="dashboard min-vh-100"
       style={{
         backgroundColor: theme === "dark" ? "#000" : "#fff",
         color: theme === "dark" ? "#fff" : "#000",
       }}
     >
-      <div className="dashboard-wrapper" style={{ pointerEvents: infoMovie || playingMovie ? "none" : "auto" }}>
+      <div className="dashboard-wrapper"
+        style={{ pointerEvents: infoMovie || playingMovie ? "none" : "auto" }}
+      >
         {/* Navbar */}
-        <nav className="d-flex justify-content-between align-items-center px-5 py-4" style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000, transition: "background 0.3s ease",
-          background: isScrolled
-      ? "rgba(0,0,0,0.95)" 
-      : "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",
-         }}>
+        <nav className="d-flex justify-content-between align-items-center px-5 py-4"
+          style={{
+            position: "fixed",
+            top: 0,
+            width: "100%",
+            zIndex: 1000,
+            transition: "background 0.3s ease",
+            background: isScrolled
+              ? "rgba(0,0,0,0.95)"
+              : "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",
+          }}
+        >
+          {/* Left: Logo + Tabs */}
           <div className="d-flex align-items-center gap-5">
             <img src={logo} alt="Logo" style={{ height: "35px" }} />
             {tabs.map((tab) => (
@@ -166,7 +192,10 @@ function Dashboard({ theme }) {
               </a>
             ))}
           </div>
-          <div className="d-flex align-items-center gap-4">
+
+          {/* Right nav - hidden <1100px */}
+          <div className="nav-right d-none d-lg-flex align-items-center gap-4">
+            {/* Certification Filter */}
             <select
               value={certificationFilter}
               onChange={(e) => setCertificationFilter(e.target.value)}
@@ -180,9 +209,9 @@ function Dashboard({ theme }) {
                 fontSize: "0.9rem",
                 fontWeight: "500",
                 outline: "none",
-                appearance: "none",        // hides default arrow
-                WebkitAppearance: "none",  // Safari
-                MozAppearance: "none",     // Firefox
+                appearance: "none",
+                WebkitAppearance: "none",
+                MozAppearance: "none",
                 backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "right 10px center",
@@ -195,6 +224,8 @@ function Dashboard({ theme }) {
               <option value="PG-13">PG-13</option>
               <option value="R">R</option>
             </select>
+
+            {/* Notifications */}
             <div
               className="notification-wrapper position-relative"
               ref={notificationRef}
@@ -288,6 +319,8 @@ function Dashboard({ theme }) {
                 </div>
               )}
             </div>
+
+            {/* Profile */}
             <div className="profile-wrapper position-relative" ref={profileRef}>
               <img
                 src={profile}
@@ -301,7 +334,7 @@ function Dashboard({ theme }) {
                   className="profile-dropdown"
                   style={{
                     position: "absolute",
-                    top: "40px",
+                    top: "100%",
                     right: 0,
                     background: "#141414",
                     color: "#fff",
@@ -346,7 +379,194 @@ function Dashboard({ theme }) {
               )}
             </div>
           </div>
+
+          {/* Hamburger - visible <1100px */}
+          <div className="d-lg-none">
+            {!showMobileMenu && (
+              <Menu
+                size={28}
+                color="#fff"
+                style={{ cursor: "pointer" }}
+                onClick={() => setShowMobileMenu(true)}
+              />
+            )}
+          </div>
         </nav>
+        {/* Backdrop */}
+        {showMobileMenu && (
+          <div
+            className="mobile-menu-backdrop"
+            onClick={() => setShowMobileMenu(false)}
+          ></div>
+        )}
+
+        {/* Drawer */}
+        <div className={`mobile-menu d-lg-none ${showMobileMenu ? "open" : ""}`}>
+          <X
+            size={28}
+            color="#fff"
+            className="mobile-menu-close"
+            onClick={() => setShowMobileMenu(false)}
+          />
+
+          {/* Tabs */}
+          <div className="mb-3">
+            {tabs.map((tab) => (
+              <a
+                key={tab}
+                href="#"
+                className={activeTab === tab ? "text-warning" : "text-white"}
+                style={{
+                  fontWeight: 500,
+                  textDecoration: "none",
+                  display: "block",
+                  marginBottom: "10px",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveTab(tab);
+                  setShowMobileMenu(false);
+                }}
+              >
+                {tab}
+              </a>
+            ))}
+          </div>
+
+          {/* Certification Filter */}
+          <div className="mb-3">
+            <select
+              value={certificationFilter}
+              onChange={(e) => setCertificationFilter(e.target.value)}
+              style={{
+                width: "100%",
+                backgroundColor: "#222",
+                color: "#fff",
+                border: "1px solid #555",
+                padding: "6px 12px",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              <option value="ALL">All</option>
+              <option value="G">G</option>
+              <option value="PG">PG</option>
+              <option value="PG-13">PG-13</option>
+              <option value="R">R</option>
+            </select>
+          </div>
+
+          {/* Notifications */}
+          <div className="mb-3">
+            <button
+              onClick={() => setShowNotifications((prev) => !prev)}
+              style={{
+                width: "100%",
+                background: "transparent",
+                color: "#fff",
+                border: "1px solid #333",
+                padding: "8px",
+                borderRadius: "6px",
+                textAlign: "left",
+              }}
+            >
+              🔔 Notifications
+            </button>
+            {showNotifications && (
+              <ul style={{ marginTop: "8px", paddingLeft: "16px" }}>
+                {notifications.map((n) => (
+                  <li key={n.id} style={{ marginBottom: "6px" }}>
+                    {n.text}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Profile */}
+          <div style={{ position: "relative" }}>
+            <button
+              onClick={() => setShowProfileMenu((prev) => !prev)}
+              style={{
+                width: "100%",
+                background: "transparent",
+                color: "#fff",
+                border: "1px solid #333",
+                padding: "10px 12px",
+                borderRadius: "6px",
+                textAlign: "left",
+                fontWeight: 500,
+                cursor: "pointer",
+              }}
+            >
+              👤 Profile
+            </button>
+            {showProfileMenu && (
+              <ul
+                style={{
+                  listStyle: "none",           // remove bullets
+                  marginTop: "8px",
+                  padding: "8px 0",             // padding inside the dropdown
+                  background: "#222",           // dark background
+                  borderRadius: "6px",
+                  border: "1px solid #333",
+                  position: "absolute",
+                  top: "100%",                  // below the button
+                  left: 0,
+                  width: "100%",
+                  zIndex: 2000,
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
+                }} 
+              >
+                <li>
+                  <Link to="/account" 
+                    style={{
+                    display: "block",
+                    padding: "10px 12px",
+                    color: "#fff",
+                    textDecoration: "none",
+                  }}
+                  >
+                    Account
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/settings" 
+                    style={{
+                    display: "block",
+                    padding: "10px 12px",
+                    color: "#fff",
+                    textDecoration: "none",
+                  }}
+                  >
+                    Settings
+                  </Link>
+                </li>
+                <li onClick={() => setActiveTab("My List")}
+                  style={{
+                    display: "block",
+                    padding: "10px 12px",
+                    cursor: "pointer",
+                    color: "#fff",
+                    textDecoration: "none",
+                    borderBottom: "1px solid #333"
+                  }}
+                >My List</li>
+                <li
+                  onClick={() => setShowLogoutModal(true)}
+                  style={{
+                    display: "block",
+                    padding: "10px 12px",
+                    cursor: "pointer",
+                    color: "red"
+                  }}
+                >
+                  Logout
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
 
         {/* Hero Section */}
         <div className="position-relative d-flex align-items-center" style={{ height: "80vh", background: heroMovie?.backdrop_path ? `url(https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}) center/cover no-repeat` : `url(${heroBg}) center/cover no-repeat` }}>
@@ -470,11 +690,84 @@ function Dashboard({ theme }) {
             </div>
           </div>
         )}
+        <style>
+        {`
+          @media (max-width: 991px) {
+            /* hide inline tabs on small screens */
+            nav .d-flex.align-items-center.gap-5 a {
+              display: none;
+            }
+            .mobile-menu {
+              position: fixed;
+              top: 0;
+              left: 0;
+              height: 100vh;          /* full screen height */
+              width: 70%;             /* drawer width */
+              max-width: 320px;       /* optional: prevent extra wide drawer */
+              background: #141414;
+              display: flex;
+              flex-direction: column;
+              padding: 4rem 1rem 1rem;
+              gap: 1rem;
+              z-index: 2000;
+              overflow-y: auto;       /* scroll if content is long */
+
+              /* animation */
+              transform: translateX(-100%);  
+              transition: transform 0.3s ease-in-out;
+            }
+
+            .mobile-menu.open {
+              transform: translateX(0); /* slide in */
+            }
+            
+            .mobile-menu-close {
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              cursor: pointer;
+              z-index: 2100;
+            }
+
+            .mobile-menu-backdrop {
+              position: fixed;
+              top: 0;
+              left: 0;
+              height: 100vh;
+              width: 100vw;
+              background: rgba(0, 0, 0, 0.6);
+              z-index: 1500;
+            }
+      
+            .mobile-menu a {
+              color: #fff;
+              text-decoration: none;
+              padding: 0.5rem 0;
+              border-bottom: 1px solid #333;
+            }
+
+            .mobile-menu a.text-warning {
+              color: #ffc107 !important; /* highlight active tab */
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }
 
 export default Dashboard;
+
+
+
+
+
+
+
+
+
+
+
 
 
 

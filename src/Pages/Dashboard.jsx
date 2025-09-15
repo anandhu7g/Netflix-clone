@@ -162,7 +162,7 @@ function Dashboard({ theme }) {
         style={{ pointerEvents: infoMovie || playingMovie ? "none" : "auto" }}
       >
         {/* Navbar */}
-        <nav className="d-flex justify-content-between align-items-center px-5 py-4"
+        <nav className="d-flex justify-content-between align-items-center px-3 py-4"
           style={{
             position: "fixed",
             top: 0,
@@ -175,8 +175,8 @@ function Dashboard({ theme }) {
           }}
         >
           {/* Left: Logo + Tabs */}
-          <div className="d-flex align-items-center gap-5">
-            <img src={logo} alt="Logo" style={{ height: "35px" }} />
+          <div className="d-flex align-items-center gap-5 nav-logo">
+            <img src={logo} alt="Logo" className="logo-img" />
             {tabs.map((tab) => (
               <a
                 key={tab}
@@ -497,6 +497,7 @@ function Dashboard({ theme }) {
                 textAlign: "left",
                 fontWeight: 500,
                 cursor: "pointer",
+                marginBottom:"0.1rem"
               }}
             >
               👤 Profile
@@ -558,7 +559,8 @@ function Dashboard({ theme }) {
                     display: "block",
                     padding: "10px 12px",
                     cursor: "pointer",
-                    color: "red"
+                    color: "red",
+                    
                   }}
                 >
                   Logout
@@ -566,24 +568,46 @@ function Dashboard({ theme }) {
               </ul>
             )}
           </div>
+          <div style={{ height: "180px" }}></div>
         </div>
 
-        {/* Hero Section */}
-        <div className="position-relative d-flex align-items-center" style={{ height: "80vh", background: heroMovie?.backdrop_path ? `url(https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}) center/cover no-repeat` : `url(${heroBg}) center/cover no-repeat` }}>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)" }}></div>
-          <div className="position-absolute m-5" style={{ zIndex: 2, bottom: "30px", left: "30px", maxWidth: "600px" }}>
-            <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", marginBottom: "20px", color: "#d2b1b1ff"}}>{heroMovie?.title || heroMovie?.name || "Untitled"}</h1>
-            <p style={{ color: "#e5d8d8ff" }}>{heroMovie?.overview ? heroMovie.overview.slice(0, 150) : "No description available"}...</p>
-            <div className="d-flex gap-3 mt-3">
-              <button className="btn btn-light" onClick={() => setPlayingMovie(heroMovie)}>
-                <Play size={22} /> Play
-              </button>
-              <button className="btn btn-secondary" onClick={() => setInfoMovie(heroMovie)}>
-                <Info size={22} /> More Info
-              </button>
-            </div>
-          </div>
-        </div>
+{/* Hero Section */}
+<div className="hero-wrapper position-relative">
+  {/* Hero Image */}
+  <img
+    src={
+      heroMovie?.backdrop_path
+        ? `https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}`
+        : heroBg
+    }
+    alt={heroMovie?.title || heroMovie?.name || "Hero"}
+    className="hero-img"
+  />
+
+  {/* Gradient overlay only for desktop */}
+  <div className="hero-overlay"></div>
+
+  {/* Hero Content */}
+  <div className="hero-content">
+    <h1 className="hero-title">
+      {heroMovie?.title || heroMovie?.name || "Untitled"}
+    </h1>
+    <p className="hero-desc">
+      {heroMovie?.overview
+        ? heroMovie.overview.slice(0, 150)
+        : "No description available"}
+      ...
+    </p>
+    <div className="d-flex gap-3 mt-3">
+      <button className="btn btn-light" onClick={() => setPlayingMovie(heroMovie)}>
+        <Play size={22} /> Play
+      </button>
+      <button className="btn btn-secondary" onClick={() => setInfoMovie(heroMovie)}>
+        <Info size={22} /> More Info
+      </button>
+    </div>
+  </div>
+</div>
 
         {/* Movie Rows */}
         <div className="px-5" style={{marginBottom:"20px"}}>
@@ -690,67 +714,184 @@ function Dashboard({ theme }) {
             </div>
           </div>
         )}
-        <style>
-        {`
-          @media (max-width: 991px) {
-            /* hide inline tabs on small screens */
-            nav .d-flex.align-items-center.gap-5 a {
-              display: none;
-            }
-            .mobile-menu {
-              position: fixed;
-              top: 0;
-              left: 0;
-              height: 100vh;          /* full screen height */
-              width: 70%;             /* drawer width */
-              max-width: 320px;       /* optional: prevent extra wide drawer */
-              background: #141414;
-              display: flex;
-              flex-direction: column;
-              padding: 4rem 1rem 1rem;
-              gap: 1rem;
-              z-index: 2000;
-              overflow-y: auto;       /* scroll if content is long */
-
-              /* animation */
-              transform: translateX(-100%);  
-              transition: transform 0.3s ease-in-out;
-            }
-
-            .mobile-menu.open {
-              transform: translateX(0); /* slide in */
-            }
-            
-            .mobile-menu-close {
-              position: absolute;
-              top: 20px;
-              right: 20px;
-              cursor: pointer;
-              z-index: 2100;
-            }
-
-            .mobile-menu-backdrop {
-              position: fixed;
-              top: 0;
-              left: 0;
-              height: 100vh;
-              width: 100vw;
-              background: rgba(0, 0, 0, 0.6);
-              z-index: 1500;
-            }
-      
-            .mobile-menu a {
-              color: #fff;
-              text-decoration: none;
-              padding: 0.5rem 0;
-              border-bottom: 1px solid #333;
-            }
-
-            .mobile-menu a.text-warning {
-              color: #ffc107 !important; /* highlight active tab */
-            }
+      <style>
+      {`
+        @media (max-width: 992px) {
+          /* hide inline tabs on small screens */
+          nav .d-flex.align-items-center.gap-5 a {
+            display: none;
           }
-        `}
+          .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;          /* full screen height */
+            width: 70%;             /* drawer width */
+            max-width: 320px;       /* optional: prevent extra wide drawer */
+            background: #141414;
+            display: block;
+            
+            padding: 4rem 1rem;
+            padding-bottom: 6rem;
+            box-sizing: border-box;
+            z-index: 2000;
+            overflow-y: auto;       /* scroll if content is long */
+
+            /* animation */
+            transform: translateX(-100%);  
+            transition: transform 0.3s ease-in-out;
+          }
+
+          .mobile-menu.open {
+            transform: translateX(0); /* slide in */
+          }
+          
+          .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 2100;
+          }
+
+          .mobile-menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1500;
+          }
+
+          .mobile-menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+          }
+
+          .mobile-menu a.text-warning {
+            color: #ffc107 !important; /* highlight active tab */
+          }
+        }
+
+        .logo-img {
+          height: 35px !important;  
+          transition: height 0.2s ease; 
+        }
+
+        .hero-wrapper {
+          height: 80vh;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent);
+        }
+
+        .hero-content {
+          position: absolute;
+          bottom: 30px;
+          left: 30px;
+          max-width: 600px;
+          z-index: 2;
+          color: #e5d8d8ff;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+          font-weight: bold;
+          color: #d2b1b1ff;
+        }
+
+        .hero-desc {
+          font-size: 1rem;
+        }
+
+        .hero-content .btn {
+          padding: 8px 20px;
+          font-size: 1rem;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        /* 📱 Mobile + Tablet Image Styles (same up to 768px) */
+        @media (max-width: 768px) {
+
+          .logo-img {
+            height: 23px !important;
+          }
+
+          .hero-wrapper {
+            height: auto;
+            padding-top: 80px; /* constant gap below navbar */
+            text-align: center;
+          }
+
+          .hero-img {
+            width: 95% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            margin: 0 auto;
+          }
+
+          .hero-overlay {
+            display: none; /* remove gradient on mobile & tablet */
+          }
+
+          .hero-content {
+            position: static; /* move content below image */
+            margin-top: 16px;
+            padding: 0 12px;
+            text-align: left;
+          }
+
+          .hero-content .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 6px 12px;
+          }
+        }
+
+        /* 📱 Extra small (<480px) */
+        @media (max-width: 480px) {
+          .hero-title {
+            font-size: 1.2rem;
+          }
+          .hero-desc {
+            font-size: 0.75rem;
+          }
+          .hero-content .btn {
+            font-size: 0.8rem;
+          }
+        }
+
+        /* 📱 Small tablets (481-768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+          .hero-title {
+            font-size: 1.7rem;
+          }
+          .hero-desc {
+            font-size: 1rem;
+          }
+          .hero-content .btn {
+            font-size: 1rem;
+          }
+        }
+      `}
       </style>
     </div>
   );

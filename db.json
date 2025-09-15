@@ -8,100 +8,23 @@
       "myList": [
         {
           "adult": false,
-          "backdrop_path": "/fMlAg1CyHTsCktwQrp74rl9RMwJ.jpg",
-          "genre_ids": [
-            27,
-            53
-          ],
-          "id": 138843,
-          "original_language": "en",
-          "original_title": "The Conjuring",
-          "overview": "Paranormal investigators Ed and Lorraine Warren work to help a family terrorized by a dark presence in their farmhouse. Forced to confront a powerful entity, the Warrens find themselves caught in the most terrifying case of their lives.",
-          "popularity": 105.4046,
-          "poster_path": "/wVYREutTvI2tmxr6ujrHT704wGF.jpg",
-          "release_date": "2013-07-18",
-          "title": "The Conjuring",
-          "video": false,
-          "vote_average": 7.5,
-          "vote_count": 12115
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/uIpJPDNFoeX0TVml9smPrs9KUVx.jpg",
-          "genre_ids": [
-            27,
-            9648
-          ],
-          "id": 574475,
-          "original_language": "en",
-          "original_title": "Final Destination Bloodlines",
-          "overview": "Plagued by a violent recurring nightmare, college student Stefanie heads home to track down the one person who might be able to break the cycle and save her family from the grisly demise that inevitably awaits them all.",
-          "popularity": 66.004,
-          "poster_path": "/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg",
-          "release_date": "2025-05-14",
-          "title": "Final Destination Bloodlines",
-          "video": false,
-          "vote_average": 7.138,
-          "vote_count": 2107
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/mEW9XMgYDO6U0MJcIRqRuSwjzN5.jpg",
-          "genre_ids": [
-            28,
-            53
-          ],
-          "id": 1007734,
-          "original_language": "en",
-          "original_title": "Nobody 2",
-          "overview": "Former assassin Hutch Mansell takes his family on a nostalgic vacation to a small-town theme park, only to be pulled back into violence when they clash with a corrupt operator, a crooked sheriff, and a ruthless crime boss.",
-          "popularity": 455.1798,
-          "poster_path": "/svXVRoRSu6zzFtCzkRsjZS7Lqpd.jpg",
-          "release_date": "2025-08-13",
-          "title": "Nobody 2",
-          "video": false,
-          "vote_average": 7.232,
-          "vote_count": 365
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/8jeDyvFQKgss36FbGAmGQVzPXlH.jpg",
+          "backdrop_path": "/94KROr9xO9u5Tq5gTdCJlVRRfhm.jpg",
           "genre_ids": [
             53,
-            28,
-            35
-          ],
-          "id": 1151334,
-          "original_language": "en",
-          "original_title": "Eenie Meanie",
-          "overview": "A former teenage getaway driver gets dragged back into her unsavory past when a former employer offers her a chance to save the life of her chronically unreliable ex-boyfriend.",
-          "popularity": 159.7926,
-          "poster_path": "/12Va3oO3oYUdOd75zM57Nx1976a.jpg",
-          "release_date": "2025-08-21",
-          "title": "Eenie Meanie",
-          "video": false,
-          "vote_average": 6.432,
-          "vote_count": 168
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/k3TOt50cHvTLXWYPnXP0szhiXB8.jpg",
-          "genre_ids": [
             80,
-            53,
             18
           ],
-          "id": 241,
+          "id": 1242434,
           "original_language": "en",
-          "original_title": "Natural Born Killers",
-          "overview": "Two victims of traumatized childhoods become lovers and serial murderers irresponsibly glorified by the mass media.",
-          "popularity": 4.5292,
-          "poster_path": "/fEKZwT91gxvkAoyPgpNXo8W5fu0.jpg",
-          "release_date": "1994-08-26",
-          "title": "Natural Born Killers",
+          "original_title": "Highest 2 Lowest",
+          "overview": "When a titan music mogul, widely known as having the \"best ears in the business\", is targeted with a ransom plot, he is jammed up in a life-or-death moral dilemma.",
+          "popularity": 126.7704,
+          "poster_path": "/kOzwIr0R7WhaFgoYUZFLPZA2RBZ.jpg",
+          "release_date": "2025-08-14",
+          "title": "Highest 2 Lowest",
           "video": false,
-          "vote_average": 7.053,
-          "vote_count": 3584
+          "vote_average": 5.858,
+          "vote_count": 204
         }
       ],
       "mobile": "+919400307178",

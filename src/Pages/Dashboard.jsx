@@ -18,7 +18,8 @@ function Dashboard({ theme }) {
   const [myList, setMyList] = useState([]);
   const [certificationFilter, setCertificationFilter] = useState("ALL");
   const [activeTab, setActiveTab] = useState("Home");
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [navOpacity, setNavOpacity] = useState(0);
+
   const [notifications, setNotifications] = useState([
     { id: 1, text: "🎬 New episode of Stranger Things is now streaming", read: false },
     { id: 2, text: "⭐ Because you watched Inception, try Tenet", read: false },
@@ -86,14 +87,16 @@ function Dashboard({ theme }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      // hero section height (80vh in your code)
-      const heroHeight = window.innerHeight * 0.8;
-      setIsScrolled(window.scrollY > heroHeight - 80); // -80 so it switches before nav fully leaves
+      const scrollTop = window.scrollY;
+      // 0 → 1 fade over 200px (tweak divisor for faster/slower fade)
+      const opacity = Math.min(scrollTop / 200, 1);
+      setNavOpacity(opacity);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -168,10 +171,8 @@ function Dashboard({ theme }) {
             top: 0,
             width: "100%",
             zIndex: 1000,
-            transition: "background 0.3s ease",
-            background: isScrolled
-              ? "rgba(0,0,0,0.95)"
-              : "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent)",
+            transition: "background 0.3s ease-out",
+            background: `rgba(0,0,0,${navOpacity})`,
           }}
         >
           {/* Left: Logo + Tabs */}
@@ -385,7 +386,7 @@ function Dashboard({ theme }) {
             {!showMobileMenu && (
               <Menu
                 size={28}
-                color="#fff"
+                color={theme === "dark" ? "#fff" : "#111"}
                 style={{ cursor: "pointer" }}
                 onClick={() => setShowMobileMenu(true)}
               />
@@ -404,7 +405,7 @@ function Dashboard({ theme }) {
         <div className={`mobile-menu d-lg-none ${showMobileMenu ? "open" : ""}`}>
           <X
             size={28}
-            color="#fff"
+            color={theme === "dark" ? "#fff" : "#111"}
             className="mobile-menu-close"
             onClick={() => setShowMobileMenu(false)}
           />
@@ -571,46 +572,48 @@ function Dashboard({ theme }) {
           <div style={{ height: "180px" }}></div>
         </div>
 
-{/* Hero Section */}
-<div className="hero-wrapper position-relative">
-  {/* Hero Image */}
-  <img
-    src={
-      heroMovie?.backdrop_path
-        ? `https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}`
-        : heroBg
-    }
-    alt={heroMovie?.title || heroMovie?.name || "Hero"}
-    className="hero-img"
-  />
+        {/* Hero Section */}
+        <div className="hero-wrapper position-relative">
+          {/* Hero Image */}
+          <img
+            src={
+              heroMovie?.backdrop_path
+                ? `https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}`
+                : heroBg
+            }
+            alt={heroMovie?.title || heroMovie?.name || "Hero"}
+            className="hero-img"
+          />
 
-  {/* Gradient overlay only for desktop */}
-  <div className="hero-overlay"></div>
+          {/* Gradient overlay only for desktop */}
+          <div className="hero-overlay"></div>
 
-  {/* Hero Content */}
-  <div className="hero-content">
-    <h1 className="hero-title">
-      {heroMovie?.title || heroMovie?.name || "Untitled"}
-    </h1>
-    <p className="hero-desc">
-      {heroMovie?.overview
-        ? heroMovie.overview.slice(0, 150)
-        : "No description available"}
-      ...
-    </p>
-    <div className="d-flex gap-3 mt-3">
-      <button className="btn btn-light" onClick={() => setPlayingMovie(heroMovie)}>
-        <Play size={22} /> Play
-      </button>
-      <button className="btn btn-secondary" onClick={() => setInfoMovie(heroMovie)}>
-        <Info size={22} /> More Info
-      </button>
-    </div>
-  </div>
-</div>
+          {/* Hero Content */}
+          <div className="hero-content" style={{ color: theme === "dark" ? "#e5d8d8ff" : "#111" }}>
+            <h1 className="hero-title" style={{ color: theme === "dark" ? "#d2b1b1ff" : "#111" }}>
+              {heroMovie?.title || heroMovie?.name || "Untitled"}
+            </h1>
+            <p className="hero-desc" style={{ color: theme === "dark" ? "#e5d8d8ff" : "#222" }}>
+              {heroMovie?.overview
+                ? heroMovie.overview.slice(0, 150)
+                : "No description available"}
+              ...
+            </p>
+            <div className="d-flex gap-3 mt-3">
+              <button className={`btn ${theme === "dark" ? "btn-light" : "btn-dark"}`} 
+                onClick={() => setPlayingMovie(heroMovie)}>
+                <Play size={22} /> Play
+              </button>
+              <button className={`btn ${theme === "dark" ? "btn-secondary" : "btn-outline-secondary"}`} 
+                onClick={() => setInfoMovie(heroMovie)}>
+                <Info size={22} /> More Info
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Movie Rows */}
-        <div className="px-5" style={{marginBottom:"20px"}}>
+        <div className="px-3" style={{marginBottom:"20px"}}>
           {(activeTab === "Home" || activeTab === "New & Popular") && (
             <>
               <Row title="Trending Now" fetchUrl={requests.fetchTrending(certificationFilter === "ALL" ? "" : certificationFilter)} onInfoClick={setInfoMovie} />

@@ -98,94 +98,101 @@ function MovieRow({ title, movies }) {
       </div>
 
       {/* Styles */}
-      <style jsx>{`
-        .chevron-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background: rgba(0, 0, 0, 0.6);
-          border: none;
-          color: white;
-          border-radius: 50%;
-          padding: 8px;
-          z-index: 20;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: background 0.2s ease, transform 0.2s ease;
-        }
-        .chevron-btn:hover {
-          background: rgba(255, 255, 255, 0.9);
-          color: black;
-          transform: translateY(-50%) scale(1.15);
-        }
-        .chevron-btn:active {
-          transform: translateY(-50%) scale(0.95);
-        }
-        .chevron-btn.left {
-          left: 12px;
-        }
-        .chevron-btn.right {
-          right: 12px;
-        }
+<style jsx>{`
+  .chevron-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    padding: 8px;
+    z-index: 20;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .chevron-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    transform: translateY(-50%) scale(1.15);
+  }
+  .chevron-btn:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+  .chevron-btn.left {
+    left: 12px;
+  }
+  .chevron-btn.right {
+    right: 12px;
+  }
 
-        /* Hide scrollbar */
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          scrollbar-width: none;
-        }
+  /* Hide scrollbar */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    scrollbar-width: none;
+  }
 
-        /* Movie container */
-        .movie-container {
-          flex: 0 0 auto; /* prevent flex from stretching */
-          width: 200px;   /* fixed width */
-          height: 300px;          position: relative;
-          overflow: hidden;
-        }
-          
-        .movie-img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
-          transition: transform 0.3s ease;
-          display: block;
-        }
+  /* Movie container */
+  .movie-container {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+  }
+    
+  .movie-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    display: block;
+  }
 
-        .movie-img:hover {
-          transform: scale(1.15);
-        }
+  .movie-img:hover {
+    transform: scale(1.15);
+  }
 
-        /* ✅ Responsive adjustments */
-        @media (max-width: 992px) {
-          .movie-container {
-            width: 180px;
-            height: 270px;
-          }
-          .chevron-btn {
-            padding: 6px;
-          }
-        }
+  /* ✅ Responsive adjustments */
+  @media (max-width: 1200px) {
+    .movie-container {
+      width: 180px;
+      height: 270px;
+    }
+  }
 
-        @media (max-width: 768px) {
-          .movie-container {
-            width: 150px;
-            height: 225px;
-          }
-        }
+  @media (max-width: 992px) {
+    .movie-container {
+      width: 160px;
+      height: 240px;
+    }
+  }
 
-        @media (max-width: 480px) {
-          .movie-container {
-            width: 120px;
-            height: 180px;
-          }
-          .chevron-btn {
-            padding: 4px;
-          }
-        }
-      `}</style>
+  @media (max-width: 768px) {
+    .movie-container {
+      width: 140px;
+      height: 210px;
+    }
+    /* Hide arrows on tablets/phones */
+    .chevron-btn {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .movie-container {
+      width: 110px;
+      height: 165px;
+    }
+  }
+`}</style>
     </div>
   );
 }

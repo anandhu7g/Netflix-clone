@@ -26,13 +26,8 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick, certificationFilte
     const baseMovies = propMovies.length > 0 ? propMovies : movies;
 
     if (!certificationFilter || certificationFilter === "ALL") return baseMovies;
-
-    if (certificationFilter === "R") {
-      return baseMovies.filter((m) => m.adult === true);
-    }
-    if (["G", "PG", "PG-13"].includes(certificationFilter)) {
-      return baseMovies.filter((m) => m.adult === false);
-    }
+    if (certificationFilter === "R") return baseMovies.filter((m) => m.adult === true);
+    if (["G", "PG", "PG-13"].includes(certificationFilter)) return baseMovies.filter((m) => m.adult === false);
 
     return baseMovies;
   }, [movies, propMovies, certificationFilter]);
@@ -85,11 +80,10 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick, certificationFilte
           </button>
         )}
 
-        <div ref={rowRef} className="d-flex overflow-x-scroll hide-scrollbar" style={{ gap: "15px" }}>
+        <div ref={rowRef} className="d-flex overflow-x-scroll hide-scrollbar" style={{ gap: "12px" }}>
           {moviesToDisplay.map((movie, index) => (
             <div
               key={movie.id || index}
-              style={{ minWidth: "150px", position: "relative", cursor: "pointer" }}
               className="movie-container"
               onClick={() => onInfoClick && onInfoClick(movie)}
             >
@@ -97,25 +91,10 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick, certificationFilte
                 <img
                   src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                   alt={movie.title || movie.name || "Untitled"}
-                  className="movie-img img-fluid rounded"
-                  style={{ width: "150px", height: "225px", objectFit: "cover", borderRadius: "6px" }}
+                  className="movie-img"
                 />
               ) : (
-                <div
-                  style={{
-                    width: "150px",
-                    height: "225px",
-                    background: "#333",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#aaa",
-                    borderRadius: "6px",
-                    fontSize: "12px",
-                  }}
-                >
-                  No Image
-                </div>
+                <div className="movie-placeholder">No Image</div>
               )}
             </div>
           ))}
@@ -128,40 +107,90 @@ function Row({ title, fetchUrl, propMovies = [], onInfoClick, certificationFilte
         )}
       </div>
 
-      <style jsx>{`
-        .chevron-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background: rgba(0, 0, 0, 0.6);
-          border: none;
-          color: white;
-          border-radius: 50%;
-          padding: 8px;
-          z-index: 20;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .chevron-btn:hover {
-          background: rgba(255, 255, 255, 0.9);
-          color: black;
-          transform: translateY(-50%) scale(1.15);
-        }
-        .chevron-btn.left { left: 12px; }
-        .chevron-btn.right { right: 12px; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { scrollbar-width: none; }
-        .movie-container { overflow: hidden; }
-        .movie-img { transition: transform 0.3s ease; display: block; }
-        .movie-img:hover { transform: scale(1.2); }
-      `}</style>
+<style jsx>{`
+  .chevron-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    padding: 8px;
+    z-index: 20;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chevron-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    transform: translateY(-50%) scale(1.15);
+  }
+  .chevron-btn.left { left: 12px; }
+  .chevron-btn.right { right: 12px; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { scrollbar-width: none; }
+
+  .movie-container {
+    flex: 0 0 auto;
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .movie-img {
+    width: 150px;
+    height: 225px;
+    object-fit: cover;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+  .movie-img:hover { transform: scale(1.1); }
+
+  .movie-placeholder {
+    width: 150px;
+    height: 225px;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  /* 🔥 Responsive scaling */
+  @media (max-width: 992px) {
+    .movie-img, .movie-placeholder {
+      width: 120px;
+      height: 180px;
+    }
+  }
+  @media (max-width: 768px) {
+    .movie-img, .movie-placeholder {
+      width: 100px;
+      height: 150px;
+    }
+  }
+  @media (max-width: 480px) {
+    .movie-img, .movie-placeholder {
+      width: 90px;
+      height: 135px;
+    }
+    /* 👇 Hide chevrons on mobile */
+    .chevron-btn {
+      display: none !important;
+    }
+  }
+`}</style>
     </div>
   );
 }
 
 export default Row;
+
 
 
 

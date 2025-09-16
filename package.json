@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite",
+  "dev": "concurrently \"vite\" \"json-server --watch db.json --port 5000\"",
   "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "json-server": "json-server --watch db.json --port 5000"
-  },
+  "start": "concurrently \"vite preview\" \"json-server --watch db.json --port 5000\""
+},
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.8.2",

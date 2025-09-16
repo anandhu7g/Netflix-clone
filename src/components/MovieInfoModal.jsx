@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../services/axios";
 import { Play } from "lucide-react";
 import Row from "./Row"; 
+import api from "../services/api";
 
 function MovieInfoModal({ movie, onClose, onPlay, onInfoClick, user, myList, setMyList }) { 
   const [details, setDetails] = useState(null);

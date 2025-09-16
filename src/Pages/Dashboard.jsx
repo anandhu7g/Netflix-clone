@@ -100,7 +100,6 @@ function Dashboard({ theme }) {
       const opacity = Math.min(scrollTop / 200, 1);
       setNavOpacity(opacity);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

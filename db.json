@@ -8,25 +8,6 @@
       "myList": [
         {
           "adult": false,
-          "backdrop_path": "/mEW9XMgYDO6U0MJcIRqRuSwjzN5.jpg",
-          "genre_ids": [
-            28,
-            53
-          ],
-          "id": 1007734,
-          "original_language": "en",
-          "original_title": "Nobody 2",
-          "overview": "Former assassin Hutch Mansell takes his family on a nostalgic vacation to a small-town theme park, only to be pulled back into violence when they clash with a corrupt operator, a crooked sheriff, and a ruthless crime boss.",
-          "popularity": 305.399,
-          "poster_path": "/svXVRoRSu6zzFtCzkRsjZS7Lqpd.jpg",
-          "release_date": "2025-08-13",
-          "title": "Nobody 2",
-          "video": false,
-          "vote_average": 7.313,
-          "vote_count": 506
-        },
-        {
-          "adult": false,
           "backdrop_path": "/iZLqwEwUViJdSkGVjePGhxYzbDb.jpg",
           "genre_ids": [
             878,
@@ -45,7 +26,7 @@
           "vote_count": 531
         }
       ],
-      "mobile": "+919400307178",
+      "mobile": "+919400307179",
       "theme": "dark"
     },
     {

@@ -7,7 +7,7 @@
     "dev": "concurrently \"vite\" \"json-server --watch db.json --port 5000\"",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "json-server --watch db.json --port $PORT"
+    "start": "node server.js"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",

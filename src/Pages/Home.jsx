@@ -35,15 +35,25 @@ function Home() {
   return (
     <>
       <HeroSection />
-      <div style={{ background: "#000" }}>
-        <div className="container-fluid mt-5 px-3 px-md-5">
-          <h1 className="text-light mt-5 text-center text-md-start">{t("trendingMovies")}</h1>
+      <div className="home-page" style={{ background: "#000" }}>
+        <div className="container-fluid px-2 px-md-5 pt-3">
+          <h1 className="text-light text-center text-md-start trending-heading">{t("trendingMovies")}</h1>
           {movies.length > 0 && <MovieRow movies={movies} />}
         </div>
         <ReasonsSection />
         <FAQSection />
         <FooterSection />
       </div>
+      <style>{
+        `
+          @media (max-width: 480px) {
+            .trending-heading {
+              font-size: 1.2rem;
+            }
+          } 
+        `
+        }
+      </style>
     </>
   );
 }

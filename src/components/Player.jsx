@@ -20,12 +20,7 @@ function Player({ movie, onClose }) {
         const trailer = videos.find((vid) => vid.type === "Trailer");
 
         if (isMounted) {
-          if (trailer) {
-            setTrailerKey(trailer.key);
-          } else {
-            console.warn("No trailer found for", movie.title || movie.name);
-            setTrailerKey(null);
-          }
+          setTrailerKey(trailer ? trailer.key : null);
         }
       } catch (err) {
         console.error("Error fetching trailer:", err);
@@ -37,18 +32,14 @@ function Player({ movie, onClose }) {
       fetchTrailer();
     }
 
-    // ✅ lock scroll when Player mounts
     document.body.style.overflow = "hidden";
-
     return () => {
-      // cleanup: unlock scroll + cancel updates
       isMounted = false;
       document.body.style.overflow = "auto";
     };
   }, [movie, API_KEY]);
 
-
-  if (!trailerKey) return null; // avoid blank screen until trailer loads
+  if (!trailerKey) return null;
 
   return (
     <div
@@ -63,33 +54,49 @@ function Player({ movie, onClose }) {
         justifyContent: "center",
         alignItems: "center",
         zIndex: 1000,
+        padding: "16px",
       }}
     >
-      <div style={{ position: "relative", width: "80%", height: "80%" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "900px",
+          paddingBottom: "56.25%", // ✅ 16:9 aspect ratio (9/16 = 0.5625)
+          height: 0,
+        }}
+      >
         <button
           onClick={onClose}
           style={{
             position: "absolute",
-            top: "-40px",
+            top: "-50px",
             right: "0",
             background: "transparent",
             border: "none",
             color: "white",
             fontSize: "32px",
             cursor: "pointer",
+            zIndex: 1100,
           }}
         >
           <X />
         </button>
 
         <iframe
-          width="100%"
-          height="100%"
           src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&controls=1`}
           title="YouTube trailer"
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            borderRadius: "8px",
+          }}
         ></iframe>
       </div>
     </div>
@@ -97,5 +104,6 @@ function Player({ movie, onClose }) {
 }
 
 export default Player;
+
 
 

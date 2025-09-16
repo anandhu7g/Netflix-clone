@@ -62,7 +62,6 @@ function MovieRow({ title, movies }) {
 
   return (
     <div className="position-relative my-4">
-      <h2 className="text-light mb-2">{title}</h2>
       <div className="position-relative">
         {/* Left Chevron */}
         {isDesktop && canScrollLeft && (

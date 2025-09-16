@@ -7,7 +7,7 @@ function ReasonsSection() {
   return (
     <section className="reasons-section py-5">
       <div className="container-fluid">
-        <h4 className="reasons-heading mb-4">{t("reasonsTitle")}</h4>
+        <h4 className="reasons-heading mb-4 reason-heading">{t("reasonsTitle")}</h4>
 
         <div className="reason-card">
           <div className="reason-text">
@@ -123,6 +123,9 @@ function ReasonsSection() {
           .reason-icon {
             width: 32px;
             height: 32px;
+          }
+          .reason-heading{
+            font-size: 1.2rem;
           }
         }
         `}

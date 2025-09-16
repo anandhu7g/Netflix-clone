@@ -9,7 +9,7 @@ function FooterSection() {
   };
 
   return (
-    <footer className="footer-section py-5">
+    <footer className="footer-section py-4">
       <div className="container">
         {/* ✅ Social Media Icons */}
         <div className="social-icons">
@@ -137,6 +137,9 @@ function FooterSection() {
   .footer-links {
     grid-template-columns: repeat(2, 1fr); /* 1 column on very small screens */
     font-size: 0.75rem;
+  }
+  .footer-top {
+    font-size: 0.9rem !important;
   }
 }
 

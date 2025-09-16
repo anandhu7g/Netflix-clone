@@ -3,32 +3,33 @@
     {
       "id": "1",
       "email": "admin@gmail.com",
-      "password": "admin123",
+      "password": "admin1234",
       "name": "Admin",
       "myList": [
         {
           "adult": false,
-          "backdrop_path": "/94KROr9xO9u5Tq5gTdCJlVRRfhm.jpg",
+          "backdrop_path": "/8J6UlIFcU7eZfq9iCLbgc8Auklg.jpg",
           "genre_ids": [
-            53,
-            80,
-            18
+            14,
+            10751,
+            28,
+            12
           ],
-          "id": 1242434,
+          "id": 1087192,
           "original_language": "en",
-          "original_title": "Highest 2 Lowest",
-          "overview": "When a titan music mogul, widely known as having the \"best ears in the business\", is targeted with a ransom plot, he is jammed up in a life-or-death moral dilemma.",
-          "popularity": 126.7704,
-          "poster_path": "/kOzwIr0R7WhaFgoYUZFLPZA2RBZ.jpg",
-          "release_date": "2025-08-14",
-          "title": "Highest 2 Lowest",
+          "original_title": "How to Train Your Dragon",
+          "overview": "On the rugged isle of Berk, where Vikings and dragons have been bitter enemies for generations, Hiccup stands apart, defying centuries of tradition when he befriends Toothless, a feared Night Fury dragon. Their unlikely bond reveals the true nature of dragons, challenging the very foundations of Viking society.",
+          "popularity": 166.1644,
+          "poster_path": "/q5pXRYTycaeW6dEgsCrd4mYPmxM.jpg",
+          "release_date": "2025-06-06",
+          "title": "How to Train Your Dragon",
           "video": false,
-          "vote_average": 5.858,
-          "vote_count": 204
+          "vote_average": 8,
+          "vote_count": 1891
         }
       ],
       "mobile": "+919400307178",
-      "theme": "light"
+      "theme": "dark"
     },
     {
       "id": "2",
@@ -55,6 +56,12 @@
       "id": "5",
       "name": "anandhu ashokan",
       "email": "anandhuanandhu@gmail.com",
+      "password": "anandhu123"
+    },
+    {
+      "id": "acf3",
+      "name": "Anandhu",
+      "email": "anandhuashokan40@gmail.com",
       "password": "anandhu123"
     }
   ]

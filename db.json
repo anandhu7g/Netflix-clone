@@ -8,84 +8,24 @@
       "myList": [
         {
           "adult": false,
-          "backdrop_path": "/fq8gLtrz1ByW3KQ2IM3RMZEIjsQ.jpg",
-          "genre_ids": [
-            27
-          ],
-          "id": 1038392,
-          "original_language": "en",
-          "original_title": "The Conjuring: Last Rites",
-          "overview": "Paranormal investigators Ed and Lorraine Warren take on one last terrifying case involving mysterious entities they must confront.",
-          "popularity": 471.7578,
-          "poster_path": "/29ES27icY5CzTcMhlz1H4SdQRod.jpg",
-          "release_date": "2025-09-03",
-          "title": "The Conjuring: Last Rites",
-          "video": false,
-          "vote_average": 6.678,
-          "vote_count": 298
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/uIpJPDNFoeX0TVml9smPrs9KUVx.jpg",
-          "genre_ids": [
-            27,
-            9648
-          ],
-          "id": 574475,
-          "original_language": "en",
-          "original_title": "Final Destination Bloodlines",
-          "overview": "Plagued by a violent recurring nightmare, college student Stefanie heads home to track down the one person who might be able to break the cycle and save her family from the grisly demise that inevitably awaits them all.",
-          "popularity": 70.2779,
-          "poster_path": "/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg",
-          "release_date": "2025-05-14",
-          "title": "Final Destination Bloodlines",
-          "video": false,
-          "vote_average": 7.1,
-          "vote_count": 2132
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/lWeaB9S77Os7VHOt8GH5JdfrBX3.jpg",
+          "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg",
           "genre_ids": [
             16,
-            10751,
-            35,
-            12,
-            878
+            28,
+            14,
+            53
           ],
-          "id": 1022787,
-          "original_language": "en",
-          "original_title": "Elio",
-          "overview": "Elio, a space fanatic with an active imagination, finds himself on a cosmic misadventure where he must form new bonds with eccentric alien lifeforms, navigate a crisis of intergalactic proportions and somehow discover who he is truly meant to be.",
-          "popularity": 73.3664,
-          "poster_path": "/w2ARwtc1zoh0pyfwmyhpZHwuXgK.jpg",
-          "release_date": "2025-06-18",
-          "title": "Elio",
+          "id": 1311031,
+          "original_language": "ja",
+          "original_title": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
+          "overview": "The Demon Slayer Corps are drawn into the Infinity Castle, where Tanjiro, Nezuko, and the Hashira face terrifying Upper Rank demons in a desperate fight as the final battle against Muzan Kibutsuji begins.",
+          "popularity": 820.4782,
+          "poster_path": "/aFRDH3P7TX61FVGpaLhKr6QiOC1.jpg",
+          "release_date": "2025-07-18",
+          "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
           "video": false,
-          "vote_average": 6.905,
-          "vote_count": 423
-        },
-        {
-          "adult": false,
-          "backdrop_path": "/jvpkBenB6hv19WWYVlaiow8zklq.jpg",
-          "genre_ids": [
-            16,
-            10751,
-            35,
-            80,
-            12
-          ],
-          "id": 1175942,
-          "original_language": "en",
-          "original_title": "The Bad Guys 2",
-          "overview": "The now-reformed Bad Guys are trying (very, very hard) to be good, but instead find themselves hijacked into a high-stakes, globe-trotting heist, masterminded by a new team of criminals they never saw coming: The Bad Girls.",
-          "popularity": 129.6039,
-          "poster_path": "/26oSPnq0ct59l07QOXZKyzsiRtN.jpg",
-          "release_date": "2025-07-24",
-          "title": "The Bad Guys 2",
-          "video": false,
-          "vote_average": 7.802,
-          "vote_count": 358
+          "vote_average": 7.7,
+          "vote_count": 207
         }
       ],
       "mobile": "+919400307178",

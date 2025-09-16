@@ -57,7 +57,7 @@ function SignIn() {
         const res = await api.post("/users", newUser);
         
         if (res.ok) {
-          const savedUser = await res.json(); // json-server returns the user with its auto-generated numeric id
+          const savedUser = res.data; // json-server returns the user with its auto-generated numeric id
           localStorage.setItem("user", JSON.stringify(savedUser));
           alert("User registered successfully!");
           setIsSignUp(false);

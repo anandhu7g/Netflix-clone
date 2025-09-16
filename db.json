@@ -4,32 +4,49 @@
       "id": "1",
       "email": "admin@gmail.com",
       "password": "admin1234",
-      "name": "Admin",
+      "name": "Admin1",
       "myList": [
         {
           "adult": false,
-          "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg",
+          "backdrop_path": "/mEW9XMgYDO6U0MJcIRqRuSwjzN5.jpg",
           "genre_ids": [
-            16,
             28,
-            14,
             53
           ],
-          "id": 1311031,
-          "original_language": "ja",
-          "original_title": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
-          "overview": "The Demon Slayer Corps are drawn into the Infinity Castle, where Tanjiro, Nezuko, and the Hashira face terrifying Upper Rank demons in a desperate fight as the final battle against Muzan Kibutsuji begins.",
-          "popularity": 820.4782,
-          "poster_path": "/aFRDH3P7TX61FVGpaLhKr6QiOC1.jpg",
-          "release_date": "2025-07-18",
-          "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+          "id": 1007734,
+          "original_language": "en",
+          "original_title": "Nobody 2",
+          "overview": "Former assassin Hutch Mansell takes his family on a nostalgic vacation to a small-town theme park, only to be pulled back into violence when they clash with a corrupt operator, a crooked sheriff, and a ruthless crime boss.",
+          "popularity": 305.399,
+          "poster_path": "/svXVRoRSu6zzFtCzkRsjZS7Lqpd.jpg",
+          "release_date": "2025-08-13",
+          "title": "Nobody 2",
           "video": false,
-          "vote_average": 7.7,
-          "vote_count": 207
+          "vote_average": 7.313,
+          "vote_count": 506
+        },
+        {
+          "adult": false,
+          "backdrop_path": "/iZLqwEwUViJdSkGVjePGhxYzbDb.jpg",
+          "genre_ids": [
+            878,
+            53
+          ],
+          "id": 755898,
+          "original_language": "en",
+          "original_title": "War of the Worlds",
+          "overview": "Will Radford is a top analyst for Homeland Security who tracks potential threats through a mass surveillance program, until one day an attack by an unknown entity leads him to question whether the government is hiding something from him... and from the rest of the world.",
+          "popularity": 592.4794,
+          "poster_path": "/yvirUYrva23IudARHn3mMGVxWqM.jpg",
+          "release_date": "2025-07-29",
+          "title": "War of the Worlds",
+          "video": false,
+          "vote_average": 4.337,
+          "vote_count": 531
         }
       ],
       "mobile": "+919400307178",
-      "theme": "light"
+      "theme": "dark"
     },
     {
       "id": "2",

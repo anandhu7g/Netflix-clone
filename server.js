@@ -8,6 +8,7 @@ const middlewares = jsonServer.defaults();
 server.use(cors()); // allow cross-origin requests
 server.use(jsonServer.bodyParser);
 server.use(middlewares);
+server.use("/api", router);
 
 server.use(router);
 

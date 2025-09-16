@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import heroImg from "../assets/netflix-hero.jpg";
 import { Eye, EyeOff } from "lucide-react";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import { api } from "../api";
 
 function SignIn() {
   const location = useLocation();
-  const [isSignUp, setIsSignUp] = useState(false); // toggle state
+
+  // ---------------- STATE ----------------
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // only for signup
-  const [error, setError] = useState("");
+  const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  console.log("API base URL:", import.meta.env.VITE_API_BASE);
+  const [error, setError] = useState("");
 
+  // ---------------- PREFILL (from redirect) ----------------
   useEffect(() => {
     if (location.state) {
       const { mode, email: prefillEmail } = location.state;
@@ -23,65 +24,80 @@ function SignIn() {
       if (prefillEmail) setEmail(prefillEmail);
     }
   }, [location.state]);
-  
-const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  if (isSignUp) {
-    try {
-      if (password !== confirmPassword) {
-        setError("Passwords do not match.");
-        return;
+  // ---------------- SUBMIT HANDLER ----------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (isSignUp) {
+      // SIGN UP FLOW
+      try {
+        if (password !== confirmPassword) {
+          setError("Passwords do not match.");
+          return;
+        }
+
+        // 1. Fetch users
+        console.log("API base URL:", api.defaults.baseURL);
+        const resUsers = await api.get("/users");
+        const users = resUsers.data;
+
+        // 2. Check duplicate
+        if (users.some((u) => u.email === email)) {
+          setError("Email already registered. Please sign in.");
+          return;
+        }
+
+        // 3. Create new user
+        const newUser = { name, email, password };
+        const res = await api.post("/users", newUser);
+        const savedUser = res.data;
+
+        localStorage.setItem("user", JSON.stringify(savedUser));
+        alert("User registered successfully!");
+        setIsSignUp(false);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setName("");
+      } catch (err) {
+        console.error("Signup error:", err);
+        if (err.response) {
+          console.error("Response:", err.response.status, err.response.data);
+        }
+        setError("Server error. Try again later.");
       }
+    } else {
+      // SIGN IN FLOW
+      try {
+        console.log("API base URL:", api.defaults.baseURL);
+        const resUsers = await api.get("/users");
+        const users = resUsers.data;
 
-      // 1. Get existing users
-      const resUsers = await api.get("/users");
-      const users = resUsers.data;
+        const foundUser = users.find(
+          (u) => u.email === email && u.password === password
+        );
 
-      // 2. Check if email exists
-      if (users.some(u => u.email === email)) {
-        setError("Email already registered. Please sign in.");
-        return;
+        if (foundUser) {
+          localStorage.setItem("user", JSON.stringify(foundUser));
+          window.location.href = "/Dashboard";
+        } else {
+          setError("Invalid email or password");
+        }
+      } catch (err) {
+        console.error("Signin error:", err);
+        if (err.response) {
+          console.error("Response:", err.response.status, err.response.data);
+        } else if (err.request) {
+          console.error("No response received:", err.request);
+        }
+        setError("Server error. Try again later.");
       }
-
-      // 3. Create new user
-      const newUser = { name, email, password };
-      const res = await api.post("/users", newUser);
-
-      // ✅ Axios: use res.data instead of res.ok
-      const savedUser = res.data;
-      localStorage.setItem("user", JSON.stringify(savedUser));
-      alert("User registered successfully!");
-      setIsSignUp(false);
-      setEmail(""); setPassword(""); setConfirmPassword(""); setName("");
-
-    } catch (err) {
-      console.error(err);
-      setError("Server error. Try again later.");
     }
-  } else {
-    // Sign In
-    try {
-      const resUsers = await api.get("/users");
-      const users = resUsers.data;
+  };
 
-      const foundUser = users.find(u => u.email === email && u.password === password);
-
-      if (foundUser) {
-        setError("");
-        localStorage.setItem("user", JSON.stringify(foundUser));
-        window.location.href = "/Dashboard";
-      } else {
-        setError("Invalid email or password");
-      }
-
-    } catch (err) {
-      console.error(err);
-      setError("Server error. Try again later.");
-    }
-  }
-};
-
+  // ---------------- RENDER ----------------
   return (
     <div
       className="signup-content d-flex flex-column justify-content-between signin-container"
@@ -92,7 +108,8 @@ const handleSubmit = async (e) => {
       }}
     >
       {/* Background Overlay */}
-      <div className="signin-overlay"
+      <div
+        className="signin-overlay"
         style={{
           position: "absolute",
           top: 0,
@@ -104,7 +121,7 @@ const handleSubmit = async (e) => {
         }}
       ></div>
 
-      {/* Form */}
+      {/* FORM */}
       <div
         className="d-flex justify-content-center align-items-center flex-grow-1"
         style={{ zIndex: 2 }}
@@ -125,9 +142,10 @@ const handleSubmit = async (e) => {
           <h1 className="mb-4" style={{ fontWeight: "bold" }}>
             {isSignUp ? "Sign Up" : "Sign In"}
           </h1>
+
           {error && <p className="text-danger mb-3">{error}</p>}
 
-          {/* Signup extra field */}
+          {/* SIGN UP extra field */}
           {isSignUp && (
             <div className="mb-3">
               <input
@@ -173,13 +191,12 @@ const handleSubmit = async (e) => {
               required
               style={{
                 width: "100%",
-                padding: "15px 45px 15px 15px", // extra space on right for icon
+                padding: "15px 45px 15px 15px",
                 background: "transparent",
                 border: "1px solid #7a7676ff",
                 borderRadius: "4px",
                 color: "white",
                 fontSize: "17px",
-                lineHeight: "1.5",
               }}
             />
             <span
@@ -188,16 +205,17 @@ const handleSubmit = async (e) => {
                 position: "absolute",
                 right: "15px",
                 top: "50%",
-                transform: "translateY(-50%)", // ✅ keeps it centered
+                transform: "translateY(-50%)",
                 cursor: "pointer",
                 color: "#aaa",
-                fontSize: "20px", // adjust size as needed
+                fontSize: "20px",
               }}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
           </div>
 
+          {/* Confirm Password */}
           {isSignUp && (
             <input
               type={showPassword ? "text" : "password"}
@@ -218,7 +236,7 @@ const handleSubmit = async (e) => {
             />
           )}
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             className="btn btn-lg w-100"
@@ -231,13 +249,10 @@ const handleSubmit = async (e) => {
             {isSignUp ? "Sign Up" : "Sign In"}
           </button>
 
-          {/* Show only in Sign In mode */}
+          {/* Only Sign In extras */}
           {!isSignUp && (
             <>
-              {/* Divider */}
               <div className="text-center my-3">OR</div>
-
-              {/* Sign-in code button */}
               <button
                 type="button"
                 className="btn btn-lg w-100 mb-3"
@@ -250,8 +265,6 @@ const handleSubmit = async (e) => {
               >
                 Use a sign-in code
               </button>
-
-              {/* Forgot password */}
               <div className="text-center mb-3">
                 <a
                   href="/forgot-password"
@@ -263,7 +276,7 @@ const handleSubmit = async (e) => {
             </>
           )}
 
-          {/* Remember me + Toggle Signup/Signin link */}
+          {/* Remember + Toggle Signin/Signup */}
           <div className="d-flex flex-column text-secondary gap-3 mt-5">
             {!isSignUp && (
               <div style={{ color: "white" }}>
@@ -282,7 +295,7 @@ const handleSubmit = async (e) => {
                       e.preventDefault();
                       setIsSignUp(false);
                       setError("");
-                      setEmail("");      
+                      setEmail("");
                       setPassword("");
                       setName("");
                     }}
@@ -303,8 +316,8 @@ const handleSubmit = async (e) => {
                     onClick={(e) => {
                       e.preventDefault();
                       setIsSignUp(true);
-                      setError("");     
-                      setEmail("");      
+                      setError("");
+                      setEmail("");
                       setPassword("");
                       setName("");
                     }}
@@ -320,7 +333,6 @@ const handleSubmit = async (e) => {
               )}
             </div>
 
-            {/* reCAPTCHA note */}
             <p className="text-secondary" style={{ fontSize: "13px" }}>
               This page is protected by Google reCAPTCHA to ensure you're not a
               bot.{" "}
@@ -331,6 +343,8 @@ const handleSubmit = async (e) => {
           </div>
         </form>
       </div>
+
+      {/* Inline Styles */}
       <style>
         {`
           input::placeholder {
@@ -338,7 +352,6 @@ const handleSubmit = async (e) => {
             opacity: 1 !important; 
             font-size: 17px;  
           }
-          /* 🔧 Fix Chrome autofill background */
           input:-webkit-autofill,
           input:-webkit-autofill:hover,
           input:-webkit-autofill:focus,
@@ -348,18 +361,11 @@ const handleSubmit = async (e) => {
             caret-color: #fff !important;
             transition: background-color 5000s ease-in-out 0s; 
           }
-          a:hover {
-            text-decoration: underline;
-          }
+          a:hover { text-decoration: underline; }
           @media (max-width: 600px) {
-            .signin-container {
-              background: #000 !important; /* pure black */
-            }
-            .signin-overlay {
-              display: none !important; /* hide semi-transparent overlay */
-            }
+            .signin-container { background: #000 !important; }
+            .signin-overlay { display: none !important; }
           }
-
         `}
       </style>
     </div>
@@ -367,5 +373,6 @@ const handleSubmit = async (e) => {
 }
 
 export default SignIn;
+
 
 

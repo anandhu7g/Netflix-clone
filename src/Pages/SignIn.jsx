@@ -3,6 +3,7 @@ import heroImg from "../assets/netflix-hero.jpg";
 import { Eye, EyeOff } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { api } from "../api";
 
 function SignIn() {
   const location = useLocation();
@@ -35,8 +36,8 @@ function SignIn() {
         }
 
         // 2. Get existing users
-        const resUsers = await fetch("http://localhost:5000/users");
-        const users = await resUsers.json();
+        const resUsers = await api.get("/users");
+        const users = resUsers.data;
 
         // 3. Check if email already exists
         const emailExists = users.some((u) => u.email === email);
@@ -53,11 +54,7 @@ function SignIn() {
         const newUser = { name, email, password };
 
         // 6. Save to db.json
-        const res = await fetch("http://localhost:5000/users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newUser),
-        });
+        const res = await api.post("/users", newUser);
         
         if (res.ok) {
           const savedUser = await res.json(); // json-server returns the user with its auto-generated numeric id
@@ -79,8 +76,8 @@ function SignIn() {
       // --- Signin ---
       try {
         // 1. Get users
-        const resUsers = await fetch("http://localhost:5000/users");
-        const users = await resUsers.json();
+        const resUsers = await api.get("/users");
+        const users = resUsers.data;
 
         // 2. Find user with matching email & password
         const foundUser = users.find(

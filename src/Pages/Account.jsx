@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { api } from "../api";
 
 function Account() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -14,8 +15,7 @@ function Account() {
     }
 
     // fetch once on mount
-    axios
-      .get(`http://localhost:5000/users/${user.id}`)
+      api.get(`/users/${user.id}`)
       .then((res) => {
         setForm({
           name: res.data.name || "",
@@ -59,10 +59,7 @@ function Account() {
         return;
       }
 
-      const res = await axios.patch(
-        `http://localhost:5000/users/${userId}`,
-        updates
-      );
+      const res = await api.patch(`/users/${userId}`, updates);
 
       if (res.status === 200) {
         const updatedUser = { ...user, ...updates };

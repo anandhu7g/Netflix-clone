@@ -29,7 +29,7 @@
         }
       ],
       "mobile": "+919400307178",
-      "theme": "dark"
+      "theme": "light"
     },
     {
       "id": "2",
@@ -62,7 +62,52 @@
       "id": "acf3",
       "name": "Anandhu",
       "email": "anandhuashokan40@gmail.com",
-      "password": "anandhu123"
+      "password": "anandhu123",
+      "myList": [
+        {
+          "adult": false,
+          "backdrop_path": "/w3Bi0wygeFQctn6AqFTwhGNXRwL.jpg",
+          "genre_ids": [
+            16,
+            35,
+            14,
+            10402
+          ],
+          "id": 803796,
+          "original_language": "en",
+          "original_title": "KPop Demon Hunters",
+          "overview": "When K-pop superstars Rumi, Mira and Zoey aren't selling out stadiums, they're using their secret powers to protect their fans from supernatural threats.",
+          "popularity": 162.0916,
+          "poster_path": "/22AouvwlhlXbe3nrFcjzL24bvWH.jpg",
+          "release_date": "2025-06-20",
+          "title": "KPop Demon Hunters",
+          "video": false,
+          "vote_average": 8.333,
+          "vote_count": 1383
+        },
+        {
+          "adult": false,
+          "backdrop_path": "/6nCy4OrV7gxhDc3lBSUxkNALPej.jpg",
+          "genre_ids": [
+            28,
+            36,
+            18,
+            12,
+            10752
+          ],
+          "id": 1051486,
+          "original_language": "en",
+          "original_title": "Stockholm Bloodbath",
+          "overview": "In 1520, the notorious and power-hungry Danish King Christian II is determined to seize the Swedish crown from Sten Sture, no matter what it takes. Meanwhile, sisters Freja and Anne make a solemn promise to seek revenge on the men who brutally murdered their family. Everything comes to a head in the heart of Stockholm, where the sisters are drawn into a ruthless political struggle between Sweden and Denmark that culminates in a mass execution, presided over by the mad King \"Christian the Tyrant,\" known as the Stockholm Bloodbath.",
+          "popularity": 208.0985,
+          "poster_path": "/tzXOB8nxO70SfSbOhrYcY94x6MI.jpg",
+          "release_date": "2024-01-19",
+          "title": "Stockholm Bloodbath",
+          "video": false,
+          "vote_average": 6.2,
+          "vote_count": 32
+        }
+      ]
     }
   ]
 }

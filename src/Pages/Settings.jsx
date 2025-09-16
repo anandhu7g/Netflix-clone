@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { api } from "../api";
 
 function Settings({ theme, setTheme }) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -9,17 +10,18 @@ function Settings({ theme, setTheme }) {
     setTheme(newTheme);
 
     try {
-      await axios.put(`http://localhost:5000/users/${user.id}`, {
+      await api.put(`/users/${user.id}`, {
         ...user,
         theme: newTheme,
       });
 
-      const updatedUser = { ...user, theme: newTheme };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-    } catch (err) {
-      console.error(err);
-      alert("Error updating theme");
-    }
+  const updatedUser = { ...user, theme: newTheme };
+  localStorage.setItem("user", JSON.stringify(updatedUser));
+  } 
+  catch (err) {
+    console.error(err);
+    alert("Error updating theme");
+  }
   };
 
   // Toggle button

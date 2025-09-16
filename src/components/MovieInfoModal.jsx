@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../services/axios";
 import { Play } from "lucide-react";
 import Row from "./Row"; 
-import api from "../services/api";
+import { api } from "../api"
 
 function MovieInfoModal({ movie, onClose, onPlay, onInfoClick, user, myList, setMyList }) { 
   const [details, setDetails] = useState(null);
@@ -22,7 +22,7 @@ function MovieInfoModal({ movie, onClose, onPlay, onInfoClick, user, myList, set
       : [...myList, movie];
 
     try {
-      await axios.patch(`http://localhost:5000/users/${user.id}`, { myList: updatedList });
+      await api.patch(`/users/${user.id}`, { myList: updatedList });
       setMyList(updatedList);
     } catch (err) {
       console.error("Error updating My List:", err);

@@ -10,6 +10,7 @@ import FooterSection from "../components/FooterSection";
 import Player from "../components/Player";
 import MovieInfoModal from "../components/MovieInfoModal";
 import { Link } from "react-router-dom";
+import { api } from "../api";
 
 function Dashboard({ theme }) {
   const [heroMovie, setHeroMovie] = useState(null);
@@ -77,7 +78,7 @@ function Dashboard({ theme }) {
     async function fetchMyList() {
       if (!user) return;
       try {
-        const res = await axios.get(`http://localhost:5000/users/${user.id}`);
+        const res = await api.get(`/users/${user.id}`);
         setMyList(res.data.myList || []);
       } catch (err) {
         console.error("Error fetching My List:", err);

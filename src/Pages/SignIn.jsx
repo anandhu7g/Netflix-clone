@@ -24,79 +24,62 @@ function SignIn() {
     }
   }, [location.state]);
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (isSignUp) {
-      // --- Signup ---
-      try {
-        // 1. Check if passwords match
-        if (password !== confirmPassword) {
-          setError("Passwords do not match.");
-          return;
-        }
-
-        // 2. Get existing users
-        const resUsers = await api.get("/users");
-        const users = resUsers.data;
-
-        // 3. Check if email already exists
-        const emailExists = users.some((u) => u.email === email);
-        if (emailExists) {
-          setError("Email already registered. Please sign in.");
-          return;
-        }
-
-        // 4. Generate next numeric ID
-        const newId =
-          users.length > 0 ? Math.max(...users.map((u) => Number(u.id))) + 1 : 1;
-
-        // 5. Create new user object
-        const newUser = { name, email, password };
-
-        // 6. Save to db.json
-        const res = await api.post("/users", newUser);
-        
-        if (res.ok) {
-          const savedUser = res.data; // json-server returns the user with its auto-generated numeric id
-          localStorage.setItem("user", JSON.stringify(savedUser));
-          alert("User registered successfully!");
-          setIsSignUp(false);
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          setName("");
-        } else {
-          setError("Could not sign up. Try again.");
-        }
-      } catch (err) {
-        console.error(err);
-        setError("Server error. Try again later.");
+  if (isSignUp) {
+    try {
+      if (password !== confirmPassword) {
+        setError("Passwords do not match.");
+        return;
       }
-    } else {
-      // --- Signin ---
-      try {
-        // 1. Get users
-        const resUsers = await api.get("/users");
-        const users = resUsers.data;
 
-        // 2. Find user with matching email & password
-        const foundUser = users.find(
-          (u) => u.email === email && u.password === password
-        );
+      // 1. Get existing users
+      const resUsers = await api.get("/users");
+      const users = resUsers.data;
 
-        if (foundUser) {
-          setError(""); // clear error on success
-          localStorage.setItem("user", JSON.stringify(foundUser));
-          window.location.href = "/Dashboard";
-        } else {
-          setError("Invalid email or password");
-        }
-      } catch (err) {
-        console.error(err);
-        setError("Server error. Try again later.");
+      // 2. Check if email exists
+      if (users.some(u => u.email === email)) {
+        setError("Email already registered. Please sign in.");
+        return;
       }
+
+      // 3. Create new user
+      const newUser = { name, email, password };
+      const res = await api.post("/users", newUser);
+
+      // ✅ Axios: use res.data instead of res.ok
+      const savedUser = res.data;
+      localStorage.setItem("user", JSON.stringify(savedUser));
+      alert("User registered successfully!");
+      setIsSignUp(false);
+      setEmail(""); setPassword(""); setConfirmPassword(""); setName("");
+
+    } catch (err) {
+      console.error(err);
+      setError("Server error. Try again later.");
     }
+  } else {
+    // Sign In
+    try {
+      const resUsers = await api.get("/users");
+      const users = resUsers.data;
+
+      const foundUser = users.find(u => u.email === email && u.password === password);
+
+      if (foundUser) {
+        setError("");
+        localStorage.setItem("user", JSON.stringify(foundUser));
+        window.location.href = "/Dashboard";
+      } else {
+        setError("Invalid email or password");
+      }
+
+    } catch (err) {
+      console.error(err);
+      setError("Server error. Try again later.");
+    }
+  }
 };
 
   return (

@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
+"scripts": {
   "dev": "concurrently \"vite\" \"json-server --watch db.json --port 5000\"",
   "build": "vite build",
   "start": "concurrently \"vite preview\" \"json-server --watch db.json --port 5000\"",
-  "start-json": "json-server --watch db.json --port $PORT"
+  "start-json": "json-server --watch db.json --port $PORT --host 0.0.0.0"
 },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -37,5 +37,10 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "vite": "^7.1.2"
-  }
+  },
+  "engines": {
+  "node": "20.x"
+}
+
+  
 }

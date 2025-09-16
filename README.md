@@ -1,12 +1,60 @@
-# React + Vite
+# 🎬 Netflix Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Netflix-inspired streaming web application built with **React (Vite)** and **JSON Server**.  
+This project demonstrates user authentication, movie browsing, and responsive UI — built as a portfolio project for learning and showcasing frontend development skills.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Demo
 
-## Expanding the ESLint configuration
+![Netflix Clone Demo](src/assets/netflix_project.gif)  
+*(Short preview of browsing and movie details)*
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Features
+
+- 🔐 **Authentication** – Sign up & log in with JSON Server  
+- 🎥 **Browse Movies** – Trending, Popular, Top Rated, etc.  
+- 📝 **Movie Details** – Overview, cast, and trailers  
+- 📌 **My List** – Add/remove favorite movies
+- 🎚️ **Movie Certification Filter** – Toggle movies based on certification (e.g., G, PG, PG-13, R)   
+- 📱 **Responsive Design** – Works on desktop & mobile  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React (Vite), custom CSS  
+- **State Management:** React Hooks / Context API  
+- **Mock Backend:** JSON Server  
+- **API:** [TMDB API](https://www.themoviedb.org/) for movies  
+- **Icons:** [Lucide-React](https://lucide.dev/)  
+
+---
+
+## 📂 Project Structure
+
+```netflix-clone/
+├─ node_modules/
+├─ public/
+├─ src/
+│ ├─ assets/ # Static assets (images, icons, etc.)
+│ ├─ components/ # Reusable UI components
+│ ├─ layouts/ # Conditional layout components
+│ ├─ locales/ # i18n translations
+│ ├─ Pages/ # Application pages (Home, Login, Signup, Player, etc.)
+│ ├─ services/ # API calls & Axios config
+│ ├─ App.jsx # Root component
+│ ├─ i18n.js # Internationalization setup
+│ ├─ index.css # Global styles
+│ └─ main.jsx # Entry point
+├─ .env # Environment variables (ignored in repo)
+├─ .gitignore
+├─ db.json # Mock database for JSON Server
+├─ eslint.config.js # ESLint configuration
+├─ index.html # HTML entry template
+├─ package.json
+├─ package-lock.json
+├─ README.md
+└─ vite.config.js # Vite configuration```

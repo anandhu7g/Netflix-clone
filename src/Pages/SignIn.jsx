@@ -14,14 +14,15 @@ function SignIn() {
   const [error, setError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  console.log("API base URL:", import.meta.env.VITE_API_BASE);
 
-    useEffect(() => {
-      if (location.state) {
-        const { mode, email: prefillEmail } = location.state;
-        if (mode === "signup") setIsSignUp(true);
-        if (prefillEmail) setEmail(prefillEmail);
-      }
-    }, [location.state]);
+  useEffect(() => {
+    if (location.state) {
+      const { mode, email: prefillEmail } = location.state;
+      if (mode === "signup") setIsSignUp(true);
+      if (prefillEmail) setEmail(prefillEmail);
+    }
+  }, [location.state]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();

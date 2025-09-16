@@ -47,6 +47,13 @@ function Dashboard({ theme }) {
     return movie.adult === false; // For G, PG, PG-13
   });
 
+  const hamburgerColor = () => {
+    // Light theme + dark nav → white
+    if (theme === "light" && navOpacity > 0.5) return "#fff";
+    // Otherwise, respect theme
+    return theme === "dark" ? "#fff" : "#111";
+  };
+
   // Fetch Hero Movie
   useEffect(() => {
     async function fetchHero() {
@@ -386,8 +393,8 @@ function Dashboard({ theme }) {
             {!showMobileMenu && (
               <Menu
                 size={28}
-                color={theme === "dark" ? "#fff" : "#111"}
-                style={{ cursor: "pointer" }}
+                color={hamburgerColor()}
+                style={{ cursor: "pointer", position:"relative", zIndex:"1100" }}
                 onClick={() => setShowMobileMenu(true)}
               />
             )}
@@ -405,7 +412,7 @@ function Dashboard({ theme }) {
         <div className={`mobile-menu d-lg-none ${showMobileMenu ? "open" : ""}`}>
           <X
             size={28}
-            color={theme === "dark" ? "#fff" : "#111"}
+            color="#fff"            
             className="mobile-menu-close"
             onClick={() => setShowMobileMenu(false)}
           />
@@ -528,6 +535,7 @@ function Dashboard({ theme }) {
                     color: "#fff",
                     textDecoration: "none",
                   }}
+                  onClick={(e) => e.stopPropagation()}
                   >
                     Account
                   </Link>
@@ -540,6 +548,7 @@ function Dashboard({ theme }) {
                     color: "#fff",
                     textDecoration: "none",
                   }}
+                  onClick={(e) => e.stopPropagation()}
                   >
                     Settings
                   </Link>
@@ -561,8 +570,8 @@ function Dashboard({ theme }) {
                     padding: "10px 12px",
                     cursor: "pointer",
                     color: "red",
-                    
                   }}
+                  
                 >
                   Logout
                 </li>
@@ -589,7 +598,7 @@ function Dashboard({ theme }) {
           <div className="hero-overlay"></div>
 
           {/* Hero Content */}
-          <div className="hero-content" style={{ color: theme === "dark" ? "#e5d8d8ff" : "#111" }}>
+          <div className="hero-content px-4" style={{ color: theme === "dark" ? "#e5d8d8ff" : "#111" }}>
             <h1 className="hero-title" style={{ color: theme === "dark" ? "#d2b1b1ff" : "#111" }}>
               {heroMovie?.title || heroMovie?.name || "Untitled"}
             </h1>
@@ -830,6 +839,25 @@ function Dashboard({ theme }) {
           align-items: center;
           gap: 6px;
         }
+
+        @media (min-width: 769px) {
+        .hero-content {
+          color: #fff !important; /* override inline color for screens >768px */
+        }
+
+        .hero-content .hero-title {
+          color: #fff !important;
+        }
+
+        .hero-content .hero-desc {
+          color: #fff !important;
+        }
+
+        .hero-content .btn {
+          background-color: #fff !important; /* optional: white background for buttons */
+          color: #000 !important; /* keep icon/text same as inline */
+        }
+      }
 
         /* 📱 Mobile + Tablet Image Styles (same up to 768px) */
         @media (max-width: 768px) {

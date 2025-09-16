@@ -199,7 +199,7 @@ function MovieInfoModal({ movie, onClose, onPlay, onInfoClick, user, myList, set
         }
 
         .modal-info p {
-          font-size: 0.8rem;
+          font-size: 1rem;
           line-height: 1.2;
         }
 

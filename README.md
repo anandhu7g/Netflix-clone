@@ -25,7 +25,7 @@ This project demonstrates user authentication, movie browsing, and responsive UI
 ![Login Page](src/assets/signin_page.png)
 
 ### Dashboard Page
-![Home Page](src/assets/dashboard.png)
+![Dashboard Page](./src/assets/dashboard.png)
 
 ### Movie rows
 ![Movie Details](src/assets/movie_row.png)

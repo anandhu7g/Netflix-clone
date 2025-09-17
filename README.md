@@ -25,7 +25,7 @@ This project demonstrates user authentication, movie browsing, and responsive UI
 ![Login Page](src/assets/signin_page.png)
 
 ### Dashboard Page
-![Dashboard Page](./src/assets/dashboard.png)
+![Dashboard Page](https://github.com/anandhu7g/Netflix-clone/blob/main/src/assets/dasboard.png?raw=true)
 
 ### Movie rows
 ![Movie Details](src/assets/movie_row.png)
